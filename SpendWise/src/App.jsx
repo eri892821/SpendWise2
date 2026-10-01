@@ -10,7 +10,7 @@ const Sidebar =()=>{
   return(
 
     <div className="w-64 min-h-screen bg-[#0e63c5] text-white antialiased p-6">
-      <h2>SpendWise</h2>
+      <h2 className = "text-white text-2xl font-bold">SpendWise</h2>
     </div>
 
   )
@@ -19,7 +19,7 @@ const Sidebar =()=>{
 
 const App =()=>{
   return(
-   <div className="flex min-h-screen bg-[#1c1d1f]">
+   <div className="flex min-h-screen w-full">
     <Sidebar/>
    </div>
   )
