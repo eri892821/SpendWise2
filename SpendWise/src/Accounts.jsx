@@ -31,11 +31,34 @@ const emptyForm = { name: "", type: "savings", balance: 0 };
 
 const create =async (a) => {
   const res =await AddAccount(a);
-  if (res.ok) {setNotice (`"${a.name}" was added.`); setError(''); }
+  if (res.ok) 
+    {setNotice (`"${a.name}" was added.`); 
+  setError(''); 
+}
   return res; 
 };
+
 const save= async(a) => {
   const res =await UpdateAccount (editing.id,a );
-  if (res.ok){ setNotice(`"${a.name}" was updated.`); setError(''); setEditing(null); }
+  if (res.ok){
+     setNotice(`"${a.name}" was updated.`); 
+     setError('');
+      setEditing(null); }
   return res;
+};
+
+const confirmDelete = async () =>{
+const account =deleting;
+try {
+const res=await deleteAccount(account.id)
+if (res.ok){
+
+  if (selected.id=account.id) setSelectedId(null)
+    setNotice(`"${account.name}" was deleted.`);
+      setError('');
 }
+}
+finally {
+  setDeleting(null);
+}
+};
