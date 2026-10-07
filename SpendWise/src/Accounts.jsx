@@ -26,3 +26,5 @@ const initialAccounts = [
   { id: 2, name: "Credit Account", type: "credit", balance: -500 },
   { id: 3, name: "Cash Account", type: "cash", balance: 200 },
 ];
+
+const emptyForm = { name: "", type: "savings", balance: 0 };
