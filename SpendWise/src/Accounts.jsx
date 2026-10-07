@@ -28,3 +28,9 @@ const initialAccounts = [
 ];
 
 const emptyForm = { name: "", type: "savings", balance: 0 };
+
+const create =async (a) => {
+  const res =await AddAccount(a);
+  if (res.ok) {setNotice (`"${a.name}" was added.`); setError(''); }
+  return res; 
+};
