@@ -20,3 +20,9 @@ const Account_Types = [
 ];
 
 const typeLabel = (value) => Account_Types.find((type) => type.value === value)?.label || "Unknown";
+
+const initialAccounts = [
+  { id: 1, name: "Savings Account", type: "savings", balance: 1000 },
+  { id: 2, name: "Credit Account", type: "credit", balance: -500 },
+  { id: 3, name: "Cash Account", type: "cash", balance: 200 },
+];
