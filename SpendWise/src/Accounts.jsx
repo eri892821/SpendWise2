@@ -11,3 +11,10 @@ const money = (n) => {
 
   return value < 0 ? `-Rs${formatter}` : formatter;
 };
+
+const Account_Types = [
+    {value: 'savings', label : 'Savings Account'},
+    {value: 'credit' , label : 'Credit Account'},
+    {value: 'cash', label : 'Cash Account'},
+    {value: 'investment', label : 'Investment Account'}
+];
