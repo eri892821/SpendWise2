@@ -18,3 +18,5 @@ const Account_Types = [
     {value: 'cash', label : 'Cash Account'},
     {value: 'investment', label : 'Investment Account'}
 ];
+
+const typeLabel = (value) => Account_Types.find((type) => type.value === value)?.label || "Unknown";
