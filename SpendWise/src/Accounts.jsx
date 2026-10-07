@@ -34,3 +34,8 @@ const create =async (a) => {
   if (res.ok) {setNotice (`"${a.name}" was added.`); setError(''); }
   return res; 
 };
+const save= async(a) => {
+  const res =await UpdateAccount (editing.id,a );
+  if (res.ok){ setNotice(`"${a.name}" was updated.`); setError(''); setEditing(null); }
+  return res;
+}
