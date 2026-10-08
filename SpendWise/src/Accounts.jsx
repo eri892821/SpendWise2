@@ -1,26 +1,29 @@
 import { useState } from "react";
 import "./Accounts.css";
 
+const formatRand = (amount) =>
+  `R${Number(amount || 0).toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
+
 function Accounts() {
   const [accounts, setAccounts] = useState([
     { id: 1, name: "savings", type: "Savings", balance: 5000 },
     { id: 2, name: "credit", type: "Credit", balance: 3000 },
   ]);
-
   const [name, setName] = useState("");
   const [type, setType] = useState("Savings");
   const [balance, setBalance] = useState("");
+  const [showAccounts, setShowAccounts] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
   const addAccount = () => {
+    setSuccessMessage("");
     if (!name.trim() || !balance) {
       alert("Enter Account Name and Balance");
       return;
     }
 
-    setSuccessMessage("");
-    setAccounts([
-      ...accounts,
+    setAccounts((currentAccounts) => [
+      ...currentAccounts,
       {
         id: Date.now(),
         name: name.trim(),
@@ -31,8 +34,20 @@ function Accounts() {
 
     setName("");
     setBalance("");
+    setShowAccounts(true);
     setSuccessMessage("Account created successfully.");
   };
+
+  const deleteAccount = (id) => {
+    setAccounts((currentAccounts) =>
+      currentAccounts.filter((account) => account.id !== id),
+    );
+  };
+
+  const totalBalance = accounts.reduce(
+    (sum, account) => sum + (Number(account.balance) || 0),
+    0,
+  );
 
   return (
     <main className="accounts-page">
@@ -87,6 +102,47 @@ function Accounts() {
             </p>
           )}
         </section>
+
+        {showAccounts && (
+          <>
+            <section className="accounts-summary" aria-label="Account summary">
+              <div>
+                <p className="accounts-summary-label">Total balance</p>
+                <p className="accounts-summary-amount">
+                  {formatRand(totalBalance)}
+                </p>
+              </div>
+              <p className="accounts-count">
+                {accounts.length}{" "}
+                {accounts.length === 1 ? "account" : "accounts"}
+              </p>
+            </section>
+
+            <section className="accounts-grid" aria-label="Your accounts">
+              {accounts.map((account) => (
+                <article className="account-card" key={account.id}>
+                  <div className="account-card-heading">
+                    <div>
+                      <h2>{account.name}</h2>
+                      <p className="account-type">{account.type} account</p>
+                    </div>
+                    <button
+                      className="account-delete"
+                      type="button"
+                      onClick={() => deleteAccount(account.id)}
+                      aria-label={`Delete ${account.name} account`}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  <p className="account-balance">
+                    {formatRand(account.balance)}
+                  </p>
+                </article>
+              ))}
+            </section>
+          </>
+        )}
       </div>
     </main>
   );
