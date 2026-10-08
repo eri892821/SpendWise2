@@ -38,12 +38,13 @@ const create =async (a) => {
   return res; 
 };
 
-const save= async(a) => {
-  const res =await UpdateAccount (editing.id,a );
-  if (res.ok){
-     setNotice(`"${a.name}" was updated.`); 
-     setError('');
-      setEditing(null); }
+const save = async (a) => {
+  const res = await UpdateAccount(editing.id, a);
+  if (res.ok) {
+    setNotice(`"${a.name}" was updated.`);
+    setError("");
+    setEditing(null);
+  }
   return res;
 };
 
