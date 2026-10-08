@@ -1,9 +1,6 @@
 import { useState } from "react";
 import "./Accounts.css";
 
-const formatRand = (amount) =>
-  `R${Number(amount || 0).toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
-
 function Accounts() {
   const [accounts, setAccounts] = useState([
     { id: 1, name: "savings", type: "Savings", balance: 5000 },
@@ -13,10 +10,7 @@ function Accounts() {
   const [name, setName] = useState("");
   const [type, setType] = useState("Savings");
   const [balance, setBalance] = useState("");
-  const totalBalance = accounts.reduce(
-    (sum, account) => sum + (Number(account.balance) || 0),
-    0,
-  );
+  const [successMessage, setSuccessMessage] = useState("");
 
   const addAccount = () => {
     if (!name.trim() || !balance) {
@@ -24,11 +18,12 @@ function Accounts() {
       return;
     }
 
+    setSuccessMessage("");
     setAccounts([
       ...accounts,
       {
         id: Date.now(),
-        name,
+        name: name.trim(),
         type,
         balance: Number(balance),
       },
@@ -36,10 +31,7 @@ function Accounts() {
 
     setName("");
     setBalance("");
-  };
-
-  const deleteAccount = (id) => {
-    setAccounts(accounts.filter((account) => account.id !== id));
+    setSuccessMessage("Account created successfully.");
   };
 
   return (
@@ -48,38 +40,6 @@ function Accounts() {
         <header className="accounts-header">
           <h1>Accounts</h1>
         </header>
-
-        <section className="accounts-summary" aria-label="Account summary">
-          <div>
-            <p className="accounts-summary-label">Total balance</p>
-            <p className="accounts-summary-amount">{formatRand(totalBalance)}</p>
-          </div>
-          <p className="accounts-count">
-            {accounts.length} {accounts.length === 1 ? "account" : "accounts"}
-          </p>
-        </section>
-
-        <section className="accounts-grid" aria-label="Your accounts">
-          {accounts.map((account) => (
-            <article className="account-card" key={account.id}>
-              <div className="account-card-heading">
-                <div>
-                  <h2>{account.name}</h2>
-                  <p className="account-type">{account.type} account</p>
-                </div>
-                <button
-                  className="account-delete"
-                  type="button"
-                  onClick={() => deleteAccount(account.id)}
-                  aria-label={`Delete ${account.name} account`}
-                >
-                  Delete
-                </button>
-              </div>
-              <p className="account-balance">{formatRand(account.balance)}</p>
-            </article>
-          ))}
-        </section>
 
         <section className="account-form-panel">
           <h2>Create a new account</h2>
@@ -117,8 +77,15 @@ function Accounts() {
               />
             </label>
 
-            <button type="submit">Create</button>
+            <button className="account-create" type="submit">
+              Create
+            </button>
           </form>
+          {successMessage && (
+            <p className="account-success" role="status">
+              {successMessage}
+            </p>
+          )}
         </section>
       </div>
     </main>
