@@ -68,6 +68,12 @@ const Sidebar =()=>{
 
 const Dashboard =()=>{
 
+  const [Popup,setPopup] = useState(false)
+  const HandleSubmit = (q)=>{
+    q.preventDefault();
+    setPopup(false)
+  }
+
   return(
     <div>
       <h2 className = "!text-5xl !font-bold mb-6">
@@ -96,11 +102,11 @@ const Dashboard =()=>{
         <div className="bg-[#1f1f1f] text-white p-5 rounded-2xl w-80 shadow-lg border border-zinc-800 mt-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-l font-bold">Accounts</h3>
-            <button className="text-blue-500 hover:text-blue-400 font-bold text-xl" onClick = { ()=> console.log("Add account")}>
+            <button className="text-blue-500 hover:text-blue-400 font-bold text-xl" onClick = {()=> setPopup(true)}>
               + 
             </button> {/* this button open a pop up where you add another account and submits to a database*/}
           </div>
-
+          
           <div className = "flex flex-col gap-1 pb-4 border-b border-zinc-700">
             <div className = "flex justify-between items-center">
               <div className="flex items-center gap-1 text-sm">
@@ -170,7 +176,46 @@ const Dashboard =()=>{
       </div>
 
     </div>
+
+
+    {Popup &&(
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+
+      <div className="relative bg-[#1f1f1f] text-white p-6 rounded-2xl w-96 shadow-2xl border border-zinc-800">
+        <h3>Add Account</h3>
+        <button 
+        type='button'
+        onClick={()=> setPopup(false)} 
+        className="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl font-bold px-2 py-1"> 
+        &times; 
+        </button>
+        
+        <form onSubmit={HandleSubmit} className="flex flex-col gap-4">
+          <div>
+            <label className="block text-s text-zinc-400 mb-1">Account Name</label>
+            <input 
+            type="text"
+            placeholder='savings,credit...'
+            className="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+            required
+            />
+            <label className="block text-s text-zinc-400 mb-1">Initial Balance (R)</label>
+            <input
+            type="number"
+            placeholder='R100'
+            className="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+            required
+            />
+          </div>
+        </form>
+      </div>
+    
+
+    </div>
+    
+  )}
   </div>
+ 
   )
    
 }
