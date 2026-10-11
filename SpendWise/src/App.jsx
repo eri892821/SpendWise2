@@ -4,6 +4,22 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 import spendwiseLogo from './assets/Gemini_Generated_Image.jfif'
+import {
+  Car,
+  ShoppingCart,
+  Tv,
+  Tag,
+  Landmark,
+  Wallet,
+  PiggyBank,
+  Tags,
+  LayoutDashboard,
+  CalendarDays,
+  ChevronRight,
+  ChevronDown,
+  Plus,
+  HandCoins,
+} from "lucide-react";
 
 const Sidebar =()=>{
 
