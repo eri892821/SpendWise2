@@ -9,11 +9,18 @@ function Accounts() {
     { id: 1, name: "savings", type: "Savings", balance: 5000 },
     { id: 2, name: "credit", type: "Credit", balance: 3000 },
   ]);
+  const [budgets, setBudgets] = useState([
+    { id: 1, name: "Groceries", limit: 6000 },
+    { id: 2, name: "Transport", limit: 2400 },
+  ]);
   const [name, setName] = useState("");
   const [type, setType] = useState("Savings");
   const [balance, setBalance] = useState("");
+  const [budgetName, setBudgetName] = useState("");
+  const [budgetLimit, setBudgetLimit] = useState("");
   const [showAccounts, setShowAccounts] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [budgetSuccessMessage, setBudgetSuccessMessage] = useState("");
 
   const addAccount = () => {
     setSuccessMessage("");
@@ -38,6 +45,28 @@ function Accounts() {
     setSuccessMessage("Account created successfully.");
   };
 
+  const addBudget = () => {
+    setBudgetSuccessMessage("");
+
+    if (!budgetName.trim() || !budgetLimit) {
+      alert("Enter Budget Name and Limit");
+      return;
+    }
+
+    setBudgets((currentBudgets) => [
+      ...currentBudgets,
+      {
+        id: Date.now(),
+        name: budgetName.trim(),
+        limit: Number(budgetLimit),
+      },
+    ]);
+
+    setBudgetName("");
+    setBudgetLimit("");
+    setBudgetSuccessMessage("Budget created successfully.");
+  };
+
   const deleteAccount = (id) => {
     setAccounts((currentAccounts) =>
       currentAccounts.filter((account) => account.id !== id),
@@ -55,6 +84,16 @@ function Accounts() {
         <header className="accounts-header">
           <h1>Accounts</h1>
         </header>
+
+        <section className="accounts-summary" aria-label="Account summary">
+          <div>
+            <p className="accounts-summary-label">Total balance</p>
+            <p className="accounts-summary-amount">{formatRand(totalBalance)}</p>
+          </div>
+          <p className="accounts-count">
+            {accounts.length} {accounts.length === 1 ? "account" : "accounts"}
+          </p>
+        </section>
 
         <section className="account-form-panel">
           <h2>Create a new account</h2>
@@ -104,45 +143,78 @@ function Accounts() {
         </section>
 
         {showAccounts && (
-          <>
-            <section className="accounts-summary" aria-label="Account summary">
-              <div>
-                <p className="accounts-summary-label">Total balance</p>
-                <p className="accounts-summary-amount">
-                  {formatRand(totalBalance)}
-                </p>
-              </div>
-              <p className="accounts-count">
-                {accounts.length}{" "}
-                {accounts.length === 1 ? "account" : "accounts"}
-              </p>
-            </section>
-
-            <section className="accounts-grid" aria-label="Your accounts">
-              {accounts.map((account) => (
-                <article className="account-card" key={account.id}>
-                  <div className="account-card-heading">
-                    <div>
-                      <h2>{account.name}</h2>
-                      <p className="account-type">{account.type} account</p>
-                    </div>
-                    <button
-                      className="account-delete"
-                      type="button"
-                      onClick={() => deleteAccount(account.id)}
-                      aria-label={`Delete ${account.name} account`}
-                    >
-                      Delete
-                    </button>
+          <section className="accounts-grid" aria-label="Your accounts">
+            {accounts.map((account) => (
+              <article className="account-card" key={account.id}>
+                <div className="account-card-heading">
+                  <div>
+                    <h2>{account.name}</h2>
+                    <p className="account-type">{account.type} account</p>
                   </div>
-                  <p className="account-balance">
-                    {formatRand(account.balance)}
-                  </p>
-                </article>
-              ))}
-            </section>
-          </>
+                  <button
+                    className="account-delete"
+                    type="button"
+                    onClick={() => deleteAccount(account.id)}
+                    aria-label={`Delete ${account.name} account`}
+                  >
+                    Delete
+                  </button>
+                </div>
+                <p className="account-balance">{formatRand(account.balance)}</p>
+              </article>
+            ))}
+          </section>
         )}
+
+        <section className="budget-form-panel">
+          <h2>Create a new budget</h2>
+          <form
+            className="budget-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              addBudget();
+            }}
+          >
+            <label className="budget-field">
+              <span>Budget name</span>
+              <input
+                placeholder="e.g. Groceries"
+                value={budgetName}
+                onChange={(event) => setBudgetName(event.target.value)}
+              />
+            </label>
+
+            <label className="budget-field">
+              <span>Budget limit</span>
+              <input
+                placeholder="R 0.00"
+                type="number"
+                value={budgetLimit}
+                onChange={(event) => setBudgetLimit(event.target.value)}
+              />
+            </label>
+
+            <button className="budget-create" type="submit">
+              Create budget
+            </button>
+          </form>
+          {budgetSuccessMessage && (
+            <p className="budget-success" role="status">
+              {budgetSuccessMessage}
+            </p>
+          )}
+        </section>
+
+        <section className="budget-list" aria-label="Budget summary list">
+          {budgets.map((budget) => (
+            <article className="budget-card" key={budget.id}>
+              <div>
+                <p className="budget-name">{budget.name}</p>
+                <p className="budget-limit">{formatRand(budget.limit)}</p>
+              </div>
+            </article>
+          ))}
+        </section>
       </div>
     </main>
   );
