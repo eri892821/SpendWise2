@@ -4,6 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 import spendwiseLogo from './assets/Gemini_Generated_Image.jfif'
+import Budgets from './Budgets'
 
 const Sidebar =()=>{
 
@@ -32,6 +33,9 @@ const App =()=>{
   return(
    <div className="flex min-h-screen w-full">
     <Sidebar/>
+    <div className='flex-1 p-6'>
+      <Budgets/>
+      </div>
    </div>
   )
 }
