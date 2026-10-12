@@ -2,6 +2,7 @@ import {useState} from 'react'
 
 const Sidebar =()=>{
   return(
+    
     <div className="w-64 min-h-screen bg-[#0e63c5] text-white antialiased p-6">
       <div className="flex items-center gap-3 mb-8">
         <img src={spendwiseLogo} alt="SpendWise Logo" className="w-10 h-10 object-cover rounded-md" />
