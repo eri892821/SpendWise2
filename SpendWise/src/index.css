@@ -1,3 +1,4 @@
+@import "tailwindcss";
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -50,24 +51,28 @@
   }
 }
 
-body {
+html, body, #root {
   margin: 0;
-  min-width: 320px;
-  background: #2d2d2d;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
+
 
 #root {
   width: 100%;
-  max-width: none;
   min-height: 100vh;
-  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }
 
 h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h);
+  color: inherit;
 }
 
 h1 {

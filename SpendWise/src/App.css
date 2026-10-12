@@ -1,3 +1,10 @@
+@import "tailwindcss";
+
+.dashboard-icon {
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
