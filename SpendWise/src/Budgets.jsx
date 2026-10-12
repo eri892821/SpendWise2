@@ -7,3 +7,5 @@ function Budgets() {
     </div>
   )
 }
+
+export default Budgets
