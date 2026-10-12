@@ -82,8 +82,7 @@
 }
 
 .account-card h2,
-.account-form-panel h2,
-.budget-form-panel h2 {
+.account-form-panel h2 {
   margin: 0;
   color: #f5f5f5;
   font-size: 23px;
@@ -123,15 +122,13 @@
   color: #fff;
 }
 
-.account-form-panel,
-.budget-form-panel {
+.account-form-panel {
   padding: 22px;
   border-radius: 12px;
   background: #191a1a;
 }
 
-.account-form,
-.budget-form {
+.account-form {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.1fr) auto;
   align-items: end;
@@ -139,8 +136,7 @@
   margin-top: 20px;
 }
 
-.account-field,
-.budget-field {
+.account-field {
   display: grid;
   min-width: 0;
   gap: 7px;
@@ -150,8 +146,7 @@
 }
 
 .account-field input,
-.account-field select,
-.budget-field input {
+.account-field select {
   width: 100%;
   min-height: 58px;
   box-sizing: border-box;
@@ -164,24 +159,20 @@
   font-weight: 400;
 }
 
-.account-field input::placeholder,
-.budget-field input::placeholder {
+.account-field input::placeholder {
   color: #999;
   opacity: 1;
 }
 
 .account-field input:focus-visible,
 .account-field select:focus-visible,
-.budget-field input:focus-visible,
 .account-delete:focus-visible,
-.account-create:focus-visible,
-.budget-create:focus-visible {
+.account-create:focus-visible {
   outline: 2px solid #8dbbff;
   outline-offset: 2px;
 }
 
-.account-create,
-.budget-create {
+.account-create {
   min-height: 58px;
   padding: 0 24px;
   border: 0;
@@ -193,54 +184,22 @@
   cursor: pointer;
 }
 
-.account-create:hover,
-.budget-create:hover {
+.account-create:hover {
   background: #0b79cf;
 }
 
-.account-success,
-.budget-success {
+.account-success {
   margin: 16px 0 0;
   color: #9dd8ad;
   font-weight: 600;
 }
 
-.budget-list {
-  display: grid;
-  gap: 12px;
-}
-
-.budget-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 20px;
-  border-radius: 12px;
-  background: #e4edff;
-  color: #14558d;
-}
-
-.budget-name {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.budget-limit {
-  margin: 6px 0 0;
-  font-size: 24px;
-  font-weight: 700;
-  color: #143e68;
-}
-
 @media (max-width: 760px) {
-  .account-form,
-  .budget-form {
+  .account-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .account-create,
-  .budget-create {
+  .account-create {
     grid-column: 1 / -1;
   }
 }

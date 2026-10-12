@@ -9,18 +9,11 @@ function Accounts() {
     { id: 1, name: "savings", type: "Savings", balance: 5000 },
     { id: 2, name: "credit", type: "Credit", balance: 3000 },
   ]);
-  const [budgets, setBudgets] = useState([
-    { id: 1, name: "Groceries", limit: 6000 },
-    { id: 2, name: "Transport", limit: 2400 },
-  ]);
   const [name, setName] = useState("");
   const [type, setType] = useState("Savings");
   const [balance, setBalance] = useState("");
-  const [budgetName, setBudgetName] = useState("");
-  const [budgetLimit, setBudgetLimit] = useState("");
   const [showAccounts, setShowAccounts] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [budgetSuccessMessage, setBudgetSuccessMessage] = useState("");
 
   const addAccount = () => {
     setSuccessMessage("");
@@ -43,28 +36,6 @@ function Accounts() {
     setBalance("");
     setShowAccounts(true);
     setSuccessMessage("Account created successfully.");
-  };
-
-  const addBudget = () => {
-    setBudgetSuccessMessage("");
-
-    if (!budgetName.trim() || !budgetLimit) {
-      alert("Enter Budget Name and Limit");
-      return;
-    }
-
-    setBudgets((currentBudgets) => [
-      ...currentBudgets,
-      {
-        id: Date.now(),
-        name: budgetName.trim(),
-        limit: Number(budgetLimit),
-      },
-    ]);
-
-    setBudgetName("");
-    setBudgetLimit("");
-    setBudgetSuccessMessage("Budget created successfully.");
   };
 
   const deleteAccount = (id) => {
@@ -166,55 +137,6 @@ function Accounts() {
           </section>
         )}
 
-        <section className="budget-form-panel">
-          <h2>Create a new budget</h2>
-          <form
-            className="budget-form"
-            onSubmit={(event) => {
-              event.preventDefault();
-              addBudget();
-            }}
-          >
-            <label className="budget-field">
-              <span>Budget name</span>
-              <input
-                placeholder="e.g. Groceries"
-                value={budgetName}
-                onChange={(event) => setBudgetName(event.target.value)}
-              />
-            </label>
-
-            <label className="budget-field">
-              <span>Budget limit</span>
-              <input
-                placeholder="R 0.00"
-                type="number"
-                value={budgetLimit}
-                onChange={(event) => setBudgetLimit(event.target.value)}
-              />
-            </label>
-
-            <button className="budget-create" type="submit">
-              Create budget
-            </button>
-          </form>
-          {budgetSuccessMessage && (
-            <p className="budget-success" role="status">
-              {budgetSuccessMessage}
-            </p>
-          )}
-        </section>
-
-        <section className="budget-list" aria-label="Budget summary list">
-          {budgets.map((budget) => (
-            <article className="budget-card" key={budget.id}>
-              <div>
-                <p className="budget-name">{budget.name}</p>
-                <p className="budget-limit">{formatRand(budget.limit)}</p>
-              </div>
-            </article>
-          ))}
-        </section>
       </div>
     </main>
   );
