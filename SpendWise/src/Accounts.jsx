@@ -56,6 +56,16 @@ function Accounts() {
           <h1>Accounts</h1>
         </header>
 
+        <section className="accounts-summary" aria-label="Account summary">
+          <div>
+            <p className="accounts-summary-label">Total balance</p>
+            <p className="accounts-summary-amount">{formatRand(totalBalance)}</p>
+          </div>
+          <p className="accounts-count">
+            {accounts.length} {accounts.length === 1 ? "account" : "accounts"}
+          </p>
+        </section>
+
         <section className="account-form-panel">
           <h2>Create a new account</h2>
           <form
@@ -104,45 +114,29 @@ function Accounts() {
         </section>
 
         {showAccounts && (
-          <>
-            <section className="accounts-summary" aria-label="Account summary">
-              <div>
-                <p className="accounts-summary-label">Total balance</p>
-                <p className="accounts-summary-amount">
-                  {formatRand(totalBalance)}
-                </p>
-              </div>
-              <p className="accounts-count">
-                {accounts.length}{" "}
-                {accounts.length === 1 ? "account" : "accounts"}
-              </p>
-            </section>
-
-            <section className="accounts-grid" aria-label="Your accounts">
-              {accounts.map((account) => (
-                <article className="account-card" key={account.id}>
-                  <div className="account-card-heading">
-                    <div>
-                      <h2>{account.name}</h2>
-                      <p className="account-type">{account.type} account</p>
-                    </div>
-                    <button
-                      className="account-delete"
-                      type="button"
-                      onClick={() => deleteAccount(account.id)}
-                      aria-label={`Delete ${account.name} account`}
-                    >
-                      Delete
-                    </button>
+          <section className="accounts-grid" aria-label="Your accounts">
+            {accounts.map((account) => (
+              <article className="account-card" key={account.id}>
+                <div className="account-card-heading">
+                  <div>
+                    <h2>{account.name}</h2>
+                    <p className="account-type">{account.type} account</p>
                   </div>
-                  <p className="account-balance">
-                    {formatRand(account.balance)}
-                  </p>
-                </article>
-              ))}
-            </section>
-          </>
+                  <button
+                    className="account-delete"
+                    type="button"
+                    onClick={() => deleteAccount(account.id)}
+                    aria-label={`Delete ${account.name} account`}
+                  >
+                    Delete
+                  </button>
+                </div>
+                <p className="account-balance">{formatRand(account.balance)}</p>
+              </article>
+            ))}
+          </section>
         )}
+
       </div>
     </main>
   );
