@@ -5,9 +5,8 @@ CREATE TABLE IF NOT EXISTS Accounts(
     balance INTEGER
 );
 
-CREATE TABLE IF NOT EXISTS Accounts(
+CREATE TABLE IF NOT EXISTS Categories(
     id SERIAL PRIMARY KEY,
     name TEXT,
     type TEXT,
-    balance INTEGER
 );
