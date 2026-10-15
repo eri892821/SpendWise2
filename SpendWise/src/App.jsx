@@ -69,10 +69,17 @@ const Sidebar =()=>{
 const Dashboard =()=>{
 
   const [Popup,setPopup] = useState(false)
-  const HandleSubmit = (q)=>{
+  const [Pop,setPop] = useState(false)
+  const handleBudget =(e)=>{
+    e.preventDefault();
+    setPop(false)
+  }
+
+  const handleSubmit = (q)=>{
     q.preventDefault();
     setPopup(false)
   }
+  
 
   return(
     <div>
@@ -129,7 +136,7 @@ const Dashboard =()=>{
         <div className="bg-[#1f1f1f] text-white p-5 rounded-2xl w-80 shadow-lg border border-zinc-800 mt-6">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-l font-bold">Categories</h3>
-            <button className="text-blue-500 hover:text-blue-400 font-bold text-xl" onClick = { ()=> console.log("Add account")}>
+            <button className="text-blue-500 hover:text-blue-400 font-bold text-xl" onClick = { ()=> setPop(true)}>
               + 
             </button> {/* this button open a pop up where you add another account and submits to a database*/}
           </div>
@@ -182,7 +189,6 @@ const Dashboard =()=>{
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
 
       <div className="relative bg-[#1f1f1f] text-white p-6 rounded-2xl w-96 shadow-2xl border border-zinc-800">
-        <h3>Add Account</h3>
         <button 
         type='button'
         onClick={()=> setPopup(false)} 
@@ -190,7 +196,7 @@ const Dashboard =()=>{
         &times; 
         </button>
         
-        <form onSubmit={HandleSubmit} className="flex flex-col gap-4">
+        <form onSubmit = {handleSubmit} className="flex flex-col gap-4">
           <div>
             <label className="block text-s text-zinc-400 mb-1">Account Name</label>
             <input 
@@ -206,16 +212,52 @@ const Dashboard =()=>{
             className="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
             required
             />
+            <button
+            type = 'submit' className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-lg transition-colors mt-2">
+            Add Account
+            </button>
           </div>
         </form>
       </div>
-    
-
     </div>
     
   )}
+
+  {Pop &&(
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div className="relative bg-[#1f1f1f] text-white p-6 rounded-2xl w-96 shadow-2xl border border-zinc-800">
+    <button onClick={()=> setPop(false)} className="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl font-bold px-2 py-1"> 
+    &times; 
+    </button>
+    <form onSubmit = {handleBudget}>
+      <label>Add name</label>
+      
+      <input 
+      type="text"
+      placeholder = "Add category name"
+      className="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+      required
+       />
+       <label>Category Type</label>
+       <select 
+       className="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+       required
+       >
+        <option value="">select type...</option>
+        <option value="income">income</option>
+        <option value="expense">expense</option>
+       </select>
+       <button  type = 'submit' className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-lg transition-colors mt-2">
+        Add Category
+       </button>
+    </form>
+    </div>
+
+    </div>
+)}
+
   </div>
- 
+
   )
    
 }
@@ -233,4 +275,4 @@ const App =()=>{
   )
 }
 
-export default App
+export default App;
