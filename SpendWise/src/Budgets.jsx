@@ -1,4 +1,6 @@
 import {useState} from 'react'
+import './Budgets.css'
+import {FaCar, FaShoppingCart, FaTv} from 'react-icons/fa' 
 
 const Sidebar =()=>{
   return(
