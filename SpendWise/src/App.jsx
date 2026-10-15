@@ -247,6 +247,9 @@ const Dashboard =()=>{
         <option value="income">income</option>
         <option value="expense">expense</option>
        </select>
+       <button  type = 'submit' className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-lg transition-colors mt-2">
+        Add Category
+       </button>
     </form>
     </div>
 
