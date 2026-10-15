@@ -81,6 +81,19 @@
   gap: 16px;
 }
 
+.account-card-title {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.account-card-title > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: #55a9ed;
+}
+
 .account-card h2,
 .account-form-panel h2 {
   margin: 0;
@@ -103,6 +116,32 @@
   color: #0870ba;
   font-size: 28px;
   font-weight: 700;
+}
+
+.account-initial-balance {
+  margin: 16px 0 -18px;
+  color: #a3a5a8;
+  font-size: 14px;
+}
+
+.account-goals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.account-goal-chip {
+  max-width: 100%;
+  padding: 5px 9px;
+  overflow-wrap: anywhere;
+  border: 1px solid #3e5d75;
+  border-radius: 999px;
+  background: #233b4e;
+  color: #c9e5fa;
+  font-size: 13px;
 }
 
 .account-delete {

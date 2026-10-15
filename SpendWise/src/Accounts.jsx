@@ -1,18 +1,27 @@
 import { useState } from "react";
+import { PiggyBank } from "lucide-react";
 import "./Accounts.css";
 
 const formatRand = (amount) =>
   `R${Number(amount || 0).toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
 
-function Accounts() {
+const belongsToAccount = (record, account) =>
+  record.accountId === account.id ||
+  record.account === account.name ||
+  record.accountName === account.name;
+
+function Accounts({
+  transactions = [],
+  savingsContributions = [],
+  savingsGoals = [],
+}) {
   const [accounts, setAccounts] = useState([
-    { id: 1, name: "savings", type: "Savings", balance: 5000 },
-    { id: 2, name: "credit", type: "Credit", balance: 3000 },
+    { id: 1, name: "savings", type: "Savings", initialBalance: 5000 },
+    { id: 2, name: "credit", type: "Credit", initialBalance: 3000 },
   ]);
   const [name, setName] = useState("");
   const [type, setType] = useState("Savings");
   const [balance, setBalance] = useState("");
-  const [showAccounts, setShowAccounts] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
   const addAccount = () => {
@@ -28,24 +37,80 @@ function Accounts() {
         id: Date.now(),
         name: name.trim(),
         type,
-        balance: Number(balance),
+        initialBalance: Number(balance),
       },
     ]);
 
     setName("");
     setBalance("");
-    setShowAccounts(true);
     setSuccessMessage("Account created successfully.");
   };
 
   const deleteAccount = (id) => {
+    const account = accounts.find((currentAccount) => currentAccount.id === id);
+    if (!account) return;
+
+    const linkedGoals = savingsGoals.filter(
+      (goal) => belongsToAccount(goal, account),
+    );
+    const linkedGoalIds = new Set(linkedGoals.map((goal) => goal.id));
+    const hasTransactions = transactions.some((transaction) =>
+      belongsToAccount(transaction, account),
+    );
+    const hasContributions = savingsContributions.some(
+      (contribution) =>
+        belongsToAccount(contribution, account) ||
+        linkedGoalIds.has(contribution.goalId),
+    );
+
+    if (hasTransactions || hasContributions || linkedGoals.length > 0) {
+      setSuccessMessage(
+        `Cannot delete ${account.name}: it is linked to ${[
+          hasTransactions && "transactions",
+          hasContributions && "savings contributions",
+          linkedGoals.length > 0 && "savings goals",
+        ]
+          .filter(Boolean)
+          .join(", ")}.`,
+      );
+      return;
+    }
+
+    if (!window.confirm(`Are you sure you want to delete ${account.name}?`)) {
+      return;
+    }
+
     setAccounts((currentAccounts) =>
       currentAccounts.filter((account) => account.id !== id),
     );
+    setSuccessMessage(`${account.name} account deleted.`);
+  };
+
+  const currentBalance = (account) => {
+    const transactionTotal = transactions
+      .filter((transaction) => belongsToAccount(transaction, account))
+      .reduce((sum, transaction) => sum + (Number(transaction.amount) || 0), 0);
+    const linkedGoalIds = new Set(
+      savingsGoals
+        .filter((goal) => belongsToAccount(goal, account))
+        .map((goal) => goal.id),
+    );
+    const contributionTotal = savingsContributions
+      .filter(
+        (contribution) =>
+          belongsToAccount(contribution, account) ||
+          linkedGoalIds.has(contribution.goalId),
+      )
+      .reduce(
+        (sum, contribution) => sum + (Number(contribution.amount) || 0),
+        0,
+      );
+
+    return account.initialBalance - transactionTotal - contributionTotal;
   };
 
   const totalBalance = accounts.reduce(
-    (sum, account) => sum + (Number(account.balance) || 0),
+    (sum, account) => sum + currentBalance(account),
     0,
   );
 
@@ -113,14 +178,21 @@ function Accounts() {
           )}
         </section>
 
-        {showAccounts && (
-          <section className="accounts-grid" aria-label="Your accounts">
-            {accounts.map((account) => (
+        <section className="accounts-grid" aria-label="Your accounts">
+          {accounts.map((account) => {
+            const linkedGoals = savingsGoals.filter((goal) =>
+              belongsToAccount(goal, account),
+            );
+
+            return (
               <article className="account-card" key={account.id}>
                 <div className="account-card-heading">
-                  <div>
-                    <h2>{account.name}</h2>
-                    <p className="account-type">{account.type} account</p>
+                  <div className="account-card-title">
+                    <PiggyBank size={24} aria-hidden="true" />
+                    <div>
+                      <h2>{account.name}</h2>
+                      <p className="account-type">{account.type} account</p>
+                    </div>
                   </div>
                   <button
                     className="account-delete"
@@ -131,11 +203,24 @@ function Accounts() {
                     Delete
                   </button>
                 </div>
-                <p className="account-balance">{formatRand(account.balance)}</p>
+
+                <p className="account-initial-balance">
+                  Initial balance: {formatRand(account.initialBalance)}
+                </p>
+                <p className="account-balance">{formatRand(currentBalance(account))}</p>
+                {linkedGoals.length > 0 && (
+                  <ul className="account-goals" aria-label="Linked savings goals">
+                    {linkedGoals.map((goal) => (
+                      <li className="account-goal-chip" key={goal.id}>
+                        {goal.name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </article>
-            ))}
-          </section>
-        )}
+            );
+          })}
+        </section>
 
       </div>
     </main>
