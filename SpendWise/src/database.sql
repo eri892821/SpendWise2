@@ -1,4 +1,13 @@
-CREATE TABLE IF NOT EXISTS Users(
-    UserID INTEGER PRIMARY KEY AUTOINCREMENT
-    Username TEXT NOT NULL 
-)
+CREATE TABLE IF NOT EXISTS Accounts(
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    type TEXT,
+    balance INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS Accounts(
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    type TEXT,
+    balance INTEGER
+);
