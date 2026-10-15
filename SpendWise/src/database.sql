@@ -10,3 +10,10 @@ CREATE TABLE IF NOT EXISTS Categories(
     name TEXT,
     type TEXT,
 );
+
+CREATE TABLE IF NOT EXISTS Accounts(
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    type TEXT,
+    balance INTEGER
+);
