@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PiggyBank } from "lucide-react";
+import accountIcon from "./assets/Gemini_Generated_Image_59avso59avso59av.jpg";
 import "./Accounts.css";
 
 const formatRand = (amount) =>
@@ -188,7 +188,7 @@ function Accounts({
               <article className="account-card" key={account.id}>
                 <div className="account-card-heading">
                   <div className="account-card-title">
-                    <PiggyBank size={24} aria-hidden="true" />
+                    <img className="account-card-icon" src={accountIcon} alt="" />
                     <div>
                       <h2>{account.name}</h2>
                       <p className="account-type">{account.type} account</p>
