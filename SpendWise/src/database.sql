@@ -11,9 +11,11 @@ CREATE TABLE IF NOT EXISTS Categories(
     type TEXT,
 );
 
-CREATE TABLE IF NOT EXISTS Accounts(
+CREATE TABLE IF NOT EXISTS Transactions(
     id SERIAL PRIMARY KEY,
-    name TEXT,
-    type TEXT,
-    balance INTEGER
+    date TEXT,
+    amount TEXT,
+    description TEXT,
+    account_id INTEGER REFRENCES ACCOUNTS (id),
+    category_id INTEGERE REFRENCES categories (id),
 );
