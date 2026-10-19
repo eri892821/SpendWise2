@@ -72,7 +72,7 @@ function SavingGoals() {
               </button>
             </div>
 
-            <p className="text-zinc-400 font-bold mt-5 mb-3">Linked accounts</p>
+           <p className="text-zinc-400 font-bold mt-5 mb-3">Linked accounts</p>
             <div className="flex flex-wrap gap-2">
               {g.accounts.map((acc) => (
                 <span key={acc} className="bg-[#eef2f9] text-[#1d5bb4] font-bold px-5 py-1.5 rounded-full">
@@ -104,16 +104,17 @@ function SavingGoals() {
           </div>
 
  <div className="flex-1">
-    <label className="block text-zinc-400 font-bold mb-2">
-      Link accounts
-    </label>
+  <label className="block text-zinc-400 font-bold mb-2">
+    Link accounts
+  </label>
 
-    <select
+  <select
     value={selected[0] || ""}
     onChange={(e) =>
       setSelected(e.target.value ? [e.target.value] : [])
     }
-   
+    className="w-full bg-[#2e2e2e] rounded-lg p-3 text-white focus:outline-none"
+    required
   >
     <option value="">Select an account</option>
 
