@@ -94,21 +94,30 @@ function SavingGoals() {
               required
             />
           </div>
+ <div className="goal-field">
+            <label>Link accounts</label>
+            <div className="pill-row">
+              {accountOptions.map((acc) => (
+                <button
+                  type="button"
+                  key={acc}
+                  className={selected.includes(acc) ? 'pill-option chosen' : 'pill-option'}
+                  onClick={() => toggleAccount(acc)}
+                >
+                  {acc}
+                </button>
+              ))}
+            </div>
+          </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+          <button type="submit" className="create-btn">
+            {editingId ? 'Save' : 'Create'}
+          </button>
+        </form>
+      </div>
+    </div>
+  
   )
-};
+}
 
 export default SavingGoals
