@@ -36,8 +36,8 @@ function Budgets (){
 
  return (
     <div>
-      <div className="budgets-page">
-      <h1> Budgets</h1>
+     <div>
+     <h2 className="!text-5xl !font-bold mb-6">Budgets</h2>
 
     <div style={{ display: 'flex', gap: 16 }} >
     <div className="card" style ={{background: '#e8eefc', color: '#0e63c5'}}>
