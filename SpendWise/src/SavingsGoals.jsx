@@ -104,34 +104,37 @@ function SavingGoals() {
           </div>
 
  <div className="flex-1">
-    <label className="block text-zinc-400 font-bold mb-2">Link accounts</label>
-    <div className="flex flex-wrap gap-2 bg-[#2e2e2e] rounded-lg p-2">   
-      {accountOptions.map((acc) => (
-                <button
-                  type="button"
-                  key={acc}
-                  onClick={() => toggleAccount(acc)}
-                  className={
-                    selected.includes(acc) 
-                    ? 'bg-[#eef2f9] text-[#1d5bb4] font-bold px-4 py-1 rounded-full'
-                    : 'bg-[#1f1f1f] text-zinc-300 px-4 py-1 rounded-full'
+    <label className="block text-zinc-400 font-bold mb-2">
+      Link accounts
+    </label>
 
-                  }
-                >
-                  {acc}
-                </button>
-              ))}
-            </div>
-          </div>
+    <select
+    value={selected[0] || ""}
+    onChange={(e) =>
+      setSelected(e.target.value ? [e.target.value] : [])
+    }
+   
+  >
+    <option value="">Select an account</option>
 
-          <button type="submit" className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-lg">
-            {editingId ? 'Save' : 'Create'}
-          </button>
-        </form>
-      </div>
-    </div>
-  
-  )
+    {accountOptions.map((acc) => (
+      <option key={acc} value={acc}>
+        {acc}
+      </option>
+    ))}
+  </select>
+</div>
+
+<button
+  type="submit"
+  className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-lg"
+>
+  {editingId ? 'Save' : 'Create'}
+</button>
+</form>
+</div>
+</div>
+
+)
 }
-
 export default SavingGoals
