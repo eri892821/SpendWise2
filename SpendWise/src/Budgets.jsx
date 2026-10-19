@@ -94,6 +94,22 @@ function Budgets (){
    </table>
   </div>  
 
+<div className="form-box">
+  <h3>Create a new budget</h3>
+
+  <form onSubmit={handleSubmit}>
+    {/* Field 1: category */}
+    <div className="form-field">
+      <label>Category</label>
+      <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+        <option value="">Select category</option>
+        <option value="Transport">Transport</option>
+        <option value="Groceries">Groceries</option>
+        <option value="Entertainment">Entertainment</option>
+      </select>
+    </div>
+   
+
 
     
 
