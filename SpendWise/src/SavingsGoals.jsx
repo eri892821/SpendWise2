@@ -15,7 +15,7 @@ function SavingGoals() {
   const [editingId, setEditingId] = useState(null)
 
 
-   const toggleAccount = (acc) => {
+  const toggleAccount = (acc) => {
     if (selected.includes(acc)) {
       setSelected(selected.filter((a) => a !== acc))
     } else {
