@@ -12,7 +12,7 @@ import accounts from './assets/Gemini_Generated_Image_ov0r71ov0r71ov0r.jpg'
 import savings from './assets/Gemini_Generated_Image_u9cddpu9cddpu9cd.jpeg'
 import credit from './assets/Gemini_Generated_Image_sq2pjesq2pjesq2p.jpeg'
 
-const Sidebar =()=>{
+const Sidebar =({})=>{
 
   return(
 
@@ -268,11 +268,10 @@ const App =()=>{
     <div className="flex min-h-screen w-screen m-0 p-0">
       <Sidebar/>
         <main className="flex-1 bg-[#282828] min-h-screen text-white p-8">
-            {/* Your right-side dashboard components/content go here */}
             <Dashboard/>
         </main>
     </div> 
   )
 }
-
 export default App;
+
