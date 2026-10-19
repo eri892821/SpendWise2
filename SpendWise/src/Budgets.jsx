@@ -34,7 +34,7 @@ function Budgets (){
     setDate('')
   }
 
-  return (
+ return (
     <div>
       <div className="budgets-page">
       <h1> Budgets</h1>
@@ -44,6 +44,10 @@ function Budgets (){
     <p> Total Budgeted</p>
     <h2>R5000</h2>
     </div>
+
+
+    
+
 
 
 
