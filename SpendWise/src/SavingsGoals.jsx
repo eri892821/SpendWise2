@@ -42,6 +42,15 @@ function SavingGoals() {
     setEditingId(null)
   }
 
+  const startEdit = (goal) => {
+    setEditingId(goal.id)
+    setName(goal.name)
+    setSelected(goal.accounts)
+  }
+    const handleDelete = (id) => {
+    setGoals(goals.filter((g) => g.id !== id))
+  }
+
 
 
 
