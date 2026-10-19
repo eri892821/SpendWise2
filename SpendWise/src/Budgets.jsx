@@ -82,16 +82,18 @@ function Budgets (){
                 <td className="py-3 border-b border-zinc-600 text-zinc-300" >{b.date}</td>
                 <td className="py-3 border-b border-zinc-600">
                 <div className="bg-zinc-200 h-2 w-40 rounded-full overflow-hidden">
-                 <div style={{
-                       width: `${Math.min((b.spent / b.target) * 100, 100)}%`,
+                 
+                 <div 
+                  className={`h-full rounded-full ${b.spent > b.target ? 'bg-orange-700' : 'bg-blue-600'}`}
+                      style={{width: `${Math.min((b.spent / b.target) * 100, 100)}%`,
                        height: '100%',
                       background: b.spent > b.target ? 'red' : '#0e63c5',
                       }}
                      />
                  </div>
                  </td>
-                
-                <td>R{b.spent}</td>
+                <td className="py-3 border-b border-zinc-600 text-zinc-300 text-right">R{b.spent}</td>
+              
               </tr>
             ))}
      </tbody>
