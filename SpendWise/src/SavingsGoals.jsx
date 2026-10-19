@@ -72,29 +72,37 @@ function SavingGoals() {
               </button>
             </div>
 
-            <p className="goal-label">Linked accounts</p>
-            <div className="pill-row">
+            <p className="text-zinc-400 font-bold mt-5 mb-3">Linked accounts</p>
+            <div className="flex flex-wrap gap-2">
               {g.accounts.map((acc) => (
-                <span className="pill" key={acc}>{acc}</span>
+                <span key={acc} className="bg-[#eef2f9] text-[#1d5bb4] font-bold px-5 py-1.5 rounded-full">
+                  {acc}
+                </span>
               ))}
             </div>
+
           </div>
         ))}
       </div>
 
- <div className="goal-form">
-        <h3>{editingId ? 'Edit saving goal' : 'Create a new saving goal'}</h3>
+ <div className="bg-[#1f1f1f] text-white p-6 rounded-2xl border border-zinc-800 mt-6">
+        <h3 className="text-xl font-bold mb-4">
+          {editingId ? 'Edit saving goal' : 'Create a new saving goal'}
+        </h3>
 
-        <form onSubmit={handleSubmit}>
-          <div className="goal-field">
-            <label>Goal name</label>
+        <form onSubmit={handleSubmit}  className="flex items-end gap-4">
+          <div className="flex-1">
+            <label className="block text-zinc-400 font-bold mb-2">Goal name</label>
             <input
+              type="text"
               placeholder="e.g. New Laptop"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="w-full bg-[#2e2e2e] rounded-lg p-3 text-white placeholder-zinc-500 focus:outline-none"
               required
             />
           </div>
+          
  <div className="goal-field">
             <label>Link accounts</label>
             <div className="pill-row">
