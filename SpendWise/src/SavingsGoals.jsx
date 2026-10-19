@@ -51,26 +51,27 @@ function SavingGoals() {
     setGoals(goals.filter((g) => g.id !== id))
   }
 
-  return (
-    <div className="SavingGoals-page">
-      <h1>Saving goals</h1>
-      
-      <div>
+  return (    
+    <div>
      <h2 className="text-2xl font-semibold text-white mb-4">Saving goals</h2>
 
-      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+      <div className="grid grid-cols-3 gap-6">
         {goals.map((g) => (
-          <div className="goal-card" key={g.id}>
-            <div className="goal-top">
-              <FaPiggyBank size={32} />
-              <h3>{g.name}</h3>
-              <button className="icon-btn" onClick={() => startEdit(g)}>
+         <div key={g.id} className="bg-[#1f1f1f] text-white p-5 rounded-2xl border border-zinc-800">
+
+            <div className="flex items-center gap-3">
+               <div className="bg-white text-black rounded-lg p-1.5">
+              <FaPiggyBank size={26} />
+              </div>
+              <h3 className="flex-1 text-xl font-bold">{g.name}</h3>
+              <button onClick={() => startEdit(g)} className="text-zinc-400 hover:text-white">
                 <FaEdit />
               </button>
-              <button className="icon-btn" onClick={() => handleDelete(g.id)}>
+              <button onClick={() => handleDelete(g.id)} className="text-zinc-400 hover:text-white">
                 <FaTrash />
               </button>
             </div>
+
             <p className="goal-label">Linked accounts</p>
             <div className="pill-row">
               {g.accounts.map((acc) => (
