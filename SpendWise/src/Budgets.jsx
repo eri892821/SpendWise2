@@ -32,7 +32,18 @@ function Budgets (){
     setCategory('')
     setTarget('')
     setDate('')
+  }
 
+  return (
+    <div>
+      <div className="budgets-page">
+      <h1> Budgets</h1>
+
+    <div style={{ display: 'flex', gap: 16 }} >
+    <div className="card" style ={{background: '#e8eefc', color: '#0e63c5'}}>
+    <p> Total Budgeted</p>
+    <h2>R5000</h2>
+    </div>
 
 
 
