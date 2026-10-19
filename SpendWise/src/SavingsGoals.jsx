@@ -1,4 +1,6 @@
 import {useState} from 'react'
+import { FaPiggyBank, FaEdit, FaTrash } from 'react-icons/fa'
+
 
 const Sidebar =()=>{
   return(
