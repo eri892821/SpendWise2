@@ -504,7 +504,7 @@ const Categories = () => {
   )
 }
 
-const App = () => {
+const Cat = () => {
   return (
     <div className="flex min-h-screen w-full m-0 p-0">
       <Sidebar />
@@ -515,4 +515,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Cat

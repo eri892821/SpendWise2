@@ -1,4 +1,8 @@
 import { useState } from 'react'
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from 'react-router-dom'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
@@ -11,6 +15,7 @@ import savingGoals from './assets/Gemini_Generated_Image_59avso59avso59av.jpg'
 import accounts from './assets/Gemini_Generated_Image_ov0r71ov0r71ov0r.jpg'
 import savings from './assets/Gemini_Generated_Image_u9cddpu9cddpu9cd.jpeg'
 import credit from './assets/Gemini_Generated_Image_sq2pjesq2pjesq2p.jpeg'
+import Cat from './Categories.jsx'
 
 const Sidebar =({})=>{
 
@@ -264,6 +269,28 @@ const Dashboard =()=>{
 
 const App =()=>{
 
+
+ 
+
+  <Router>
+     <nav>
+     <link to='/'/>
+     <link to='/Budgets'/>
+     <link to='/Categories'/>
+     <link to='/Savingsgoals'/>
+     <link to='/Savingsgoals'/>
+     
+  </nav>
+
+   <Routes>
+    <Route path='/Categories' element={<Cat/>} />
+   </Routes>
+
+</Router>
+
+
+
+  
   return(
     <div className="flex min-h-screen w-screen m-0 p-0">
       <Sidebar/>
