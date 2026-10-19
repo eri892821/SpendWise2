@@ -10,8 +10,8 @@ const icons={
 function Budgets (){
   const[budgets, setBudgets] =useState ([
     {id:1, category:'Transport',target:1500,date:'30 Aug',spent:870},
-    {id:1, category:'Groceries',target:2500,date:'30 Aug',spent:2200},
-    {id:1, category:'Entertainment',target:500,date:'30 Aug',spent:580},
+    {id:2, category:'Groceries',target:2500,date:'30 Aug',spent:2200},
+    {id:3, category:'Entertainment',target:500,date:'30 Aug',spent:580},
   ])
 
    const[category,setCategory]=useState ('')
