@@ -102,16 +102,21 @@ function SavingGoals() {
               required
             />
           </div>
-          
- <div className="goal-field">
-            <label>Link accounts</label>
-            <div className="pill-row">
-              {accountOptions.map((acc) => (
+
+ <div className="flex-1">
+    <label className="block text-zinc-400 font-bold mb-2">Link accounts</label>
+    <div className="flex flex-wrap gap-2 bg-[#2e2e2e] rounded-lg p-2">   
+      {accountOptions.map((acc) => (
                 <button
                   type="button"
                   key={acc}
-                  className={selected.includes(acc) ? 'pill-option chosen' : 'pill-option'}
                   onClick={() => toggleAccount(acc)}
+                  className={
+                    selected.includes(acc) 
+                    ? 'bg-[#eef2f9] text-[#1d5bb4] font-bold px-4 py-1 rounded-full'
+                    : 'bg-[#1f1f1f] text-zinc-300 px-4 py-1 rounded-full'
+
+                  }
                 >
                   {acc}
                 </button>
@@ -119,7 +124,7 @@ function SavingGoals() {
             </div>
           </div>
 
-          <button type="submit" className="create-btn">
+          <button type="submit" className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-lg">
             {editingId ? 'Save' : 'Create'}
           </button>
         </form>
