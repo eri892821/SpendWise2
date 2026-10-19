@@ -67,6 +67,7 @@ function SavingGoals() {
               <button className="icon-btn" onClick={() => startEdit(g)}>
                 <FaEdit />
               </button>
+              
               <button className="icon-btn" onClick={() => handleDelete(g.id)}>
                 <FaTrash />
               </button>
