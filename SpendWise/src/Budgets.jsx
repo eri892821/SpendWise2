@@ -70,6 +70,30 @@ function Budgets (){
       </tr>
      </thead>
 
+<tbody>
+      {budgets.map((b) => (
+              <tr key={b.id}>
+                <td>{icons[b.category]}{b.category}</td>
+                <td>R{b.target}</td>
+                <td>{b.date}</td>
+                <td>
+                  <div style={{ background: '#ddd', height: 8, width: 150 }}>
+                 <div style={{
+                       width: `${Math.min((b.spent / b.target) * 100, 100)}%`,
+                       height: '100%',
+                      background: b.spent > b.target ? 'red' : '#0e63c5',
+                      }}
+                     />
+                 </div>
+                 </td>
+                
+                <td>R{b.spent}</td>
+              </tr>
+            ))}
+     </tbody>
+   </table>
+  </div>  
+
 
     
 
