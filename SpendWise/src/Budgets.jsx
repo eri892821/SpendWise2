@@ -34,49 +34,54 @@ function Budgets (){
      <div>
      <h2 className="!text-5xl !font-bold mb-6">Budgets</h2>
 
-    <div style={{ display: 'flex', gap: 16 }} >
-    <div className="card" style ={{background: '#e8eefc', color: '#0e63c5'}}>
-    <p> Total Budgeted</p>
-    <h2>R5000</h2>
-    </div>
+    {/* Summary Card for Total Budgeted */}
+  <div className="grid grid-cols-3 gap-6">
+    <div className="bg-[#eef2f9] p-5 rounded-2xl shadow-sm w-64">
+    <p className="text-sm font-bold text-[#1d5bb4]"> Total Budgeted</p>
+    <h3 className="text-2xl font-bold text-[#0c3162] mt-1">R5,000 </h3>
+  </div>
 
-   <div  className="card"  style ={{background: '#e8eefc', color: '#0e63c5'}}>
-    <p> Total Spent</p>
-    <h2>R4860</h2>
-    </div>
+   {/* Summary Card for Total Spent */}
+   <div  className="bg-[#eef2f9] p-5 rounded-2xl shadow-sm" >
+    <p  className="text-sm font-bold text-[#1d5bb4]"> Total Spent</p>
+    <h3 className="text-2xl font-bold text-[#0c3162] mt-1">R4,860</h3>
+  </div>
 
-     <div className="card" style ={{background: '#e4771d', color: '#0e63c5'}}>
-    <p> Over Spent</p>
-    <h2>R80</h2>
-    <p>Entertainment</p>
+    {/* Summary Card for Over Spent */}
+  <div className="bg-[#e4771d] p-5 rounded-2xl shadow-sm">
+    <p className="text-sm font-bold text-[#1d5bb4]"> Over Spent</p>
+    <h3 className="text-2xl font-bold text-[#0c3162] mt-1">R80</h3>
+    <p className="text-sm font-bold text-[#1d5bb4]">Entertainment</p>
     </div>
  </div>
 
-  <div className="table-box">
+  {/* Budgets Table */}
+  <div className="bg-[#1f1f1f] text-white p-6 rounded-2xl shadow-lg border border-zinc-800 mt-6 w-full">
 
-   <table>
+   <table className="w-full text-left">
      <thead>
       <tr>
-        <th>Category</th>
-        <th>Target Amount</th>
-        <th>Target Date</th>
-        <th>Progress</th>
-        <th>Spent</th> 
+        <th className="text-lg font-normal text-zinc-300 pb-3 border-b border-zinc-400">Category</th>
+        <th className="text-lg font-normal text-zinc-300 pb-3 border-b border-zinc-400">Target Amount</th>
+        <th className="text-lg font-normal text-zinc-300 pb-3 border-b border-zinc-400">Target Date</th>
+        <th className="text-lg font-normal text-zinc-300 pb-3 border-b border-zinc-400">Progress</th>
+        <th className="text-lg font-normal text-zinc-300 pb-3 border-b border-zinc-400">Spent</th> 
       </tr>
      </thead>
 
 <tbody>
       {budgets.map((b) => (
               <tr key={b.id}>
-                <td>  <span className="flex items-center gap-3">
+                <td className="py-3 border-b border-zinc-600">  
+                <span className="flex items-center gap-3 text-sm text-white/80 font-bold ">
                 <img src={budgetIcon} alt={b.category} className="w-8 h-8 object-cover rounded-md" />
                   {b.category}
                   </span>
                   </td>
-                <td>R{b.target}</td>
-                <td>{b.date}</td>
-                <td>
-                  <div style={{ background: '#ddd', height: 8, width: 150 }}>
+                <td className="py-3 border-b border-zinc-600 text-zinc-300">R{b.target}</td>
+                <td className="py-3 border-b border-zinc-600 text-zinc-300" >{b.date}</td>
+                <td className="py-3 border-b border-zinc-600">
+                <div className="bg-zinc-200 h-2 w-40 rounded-full overflow-hidden">
                  <div style={{
                        width: `${Math.min((b.spent / b.target) * 100, 100)}%`,
                        height: '100%',
