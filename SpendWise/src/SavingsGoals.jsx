@@ -22,6 +22,20 @@ function SavingGoals() {
       setSelected(selected.concat(acc))
     }
   }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    if (selected.length === 0) return
+
+    if (editingId) {
+      setGoals(
+        goals.map((g) =>
+          g.id === editingId ? { ...g, name: name, accounts: selected } : g
+        )
+      )
+    } else {
+      setGoals(goals.concat({ id: Date.now(), name: name, accounts: selected }))
+    }
 )
 };
 
