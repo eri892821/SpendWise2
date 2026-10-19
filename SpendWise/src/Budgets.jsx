@@ -18,6 +18,22 @@ function Budgets (){
   const [target, setTarget]=useState('')
   const [date, setDate]=useState('')
 
+  const handleSubmit= (event)=> {
+    event.preventDefault()
+    const newBudget={
+      id:Date.now(),
+      category:category,
+      target:Number(target),
+      date:date,
+      spent:0,
+    }
+    
+    setBudgets(budgets.concat(newBudget))
+    setCategory('')
+    setTarget('')
+    setDate('')
+
+
 
 
 
