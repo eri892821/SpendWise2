@@ -45,6 +45,10 @@ function Budgets (){
     <h2>R5000</h2>
     </div>
 
+   <div  className="card"  style ={{background: '#e8eefc', color: '#0e63c5'}}>
+    <p> Total Spent</p>
+    <h2>R4860</h2>
+    </div>
 
     
 
