@@ -14,7 +14,9 @@ function Budgets (){
     {id:1, category:'Entertainment',target:500,date:'30 Aug',spent:580},
   ])
 
-  
+   const[category,setCategory]=useState ('')
+  const [target, setTarget]=useState('')
+  const [date, setDate]=useState('')
 
 
 
