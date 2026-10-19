@@ -108,7 +108,39 @@ function Budgets (){
         <option value="Entertainment">Entertainment</option>
       </select>
     </div>
+
+    <div className="form-field">
+      <label>Target amount</label>
+      <input
+        type="number"
+        placeholder="R 0.00"
+        value={target}
+        onChange={(e) => setTarget(e.target.value)}
+        required
+      />
+    </div>
+
+    <div className="form-field">
+      <label>Target date</label>
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        required
+      />
+    </div>
    
+   <button type="submit">Create</button>
+  </form>
+</div>
+</div>
+</div>
+)
+}
+
+
+export default Budgets
+
 
 
     
