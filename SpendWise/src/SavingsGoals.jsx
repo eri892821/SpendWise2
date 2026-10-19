@@ -56,7 +56,7 @@ function SavingGoals() {
       <h1>Saving goals</h1>
       
       <div>
-+      <h2 className="text-2xl font-semibold text-white mb-4">Saving goals</h2>
+     <h2 className="text-2xl font-semibold text-white mb-4">Saving goals</h2>
 
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         {goals.map((g) => (
