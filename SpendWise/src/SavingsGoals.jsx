@@ -51,6 +51,37 @@ function SavingGoals() {
     setGoals(goals.filter((g) => g.id !== id))
   }
 
+  return (
+    <div className="SavingGoals-page">
+      <h1>Saving goals</h1>
+      
+      <div>
++      <h2 className="text-2xl font-semibold text-white mb-4">Saving goals</h2>
+
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        {goals.map((g) => (
+          <div className="goal-card" key={g.id}>
+            <div className="goal-top">
+              <FaPiggyBank size={32} />
+              <h3>{g.name}</h3>
+              <button className="icon-btn" onClick={() => startEdit(g)}>
+                <FaEdit />
+              </button>
+              <button className="icon-btn" onClick={() => handleDelete(g.id)}>
+                <FaTrash />
+              </button>
+            </div>
+            <p className="goal-label">Linked accounts</p>
+            <div className="pill-row">
+              {g.accounts.map((acc) => (
+                <span className="pill" key={acc}>{acc}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+
 
 
 
