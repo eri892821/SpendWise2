@@ -14,4 +14,8 @@ function SavingGoals() {
   const [selected, setSelected] = useState([])
   const [editingId, setEditingId] = useState(null)
 
-  
+
+)
+};
+
+export default SavingGoals
