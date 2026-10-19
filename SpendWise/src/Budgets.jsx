@@ -56,6 +56,21 @@ function Budgets (){
     <p>Entertainment</p>
     </div>
  </div>
+
+  <div className="table-box">
+
+   <table>
+     <thead>
+      <tr>
+        <th>Category</th>
+        <th>Target Amount</th>
+        <th>Target Date</th>
+        <th>Progress</th>
+        <th>Spent</th> 
+      </tr>
+     </thead>
+
+
     
 
 
