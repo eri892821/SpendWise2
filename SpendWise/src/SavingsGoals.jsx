@@ -81,6 +81,20 @@ function SavingGoals() {
         ))}
       </div>
 
+ <div className="goal-form">
+        <h3>{editingId ? 'Edit saving goal' : 'Create a new saving goal'}</h3>
+
+        <form onSubmit={handleSubmit}>
+          <div className="goal-field">
+            <label>Goal name</label>
+            <input
+              placeholder="e.g. New Laptop"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+
 
 
 
