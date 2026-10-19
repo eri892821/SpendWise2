@@ -268,7 +268,6 @@ const App =()=>{
     <div className="flex min-h-screen w-screen m-0 p-0">
       <Sidebar/>
         <main className="flex-1 bg-[#282828] min-h-screen text-white p-8">
-            {/* Your right-side dashboard components/content go here */}
             <Dashboard/>
         </main>
     </div> 
