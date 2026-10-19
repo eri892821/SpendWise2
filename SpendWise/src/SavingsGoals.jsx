@@ -36,7 +36,25 @@ function SavingGoals() {
     } else {
       setGoals(goals.concat({ id: Date.now(), name: name, accounts: selected }))
     }
-)
+
+ setName('')
+    setSelected([])
+    setEditingId(null)
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  )
 };
 
 export default SavingGoals
