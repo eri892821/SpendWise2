@@ -1,11 +1,6 @@
 import {useState} from 'react'
-import {FaCar, FaShoppingCart, FaTv} from 'react-icons/fa' 
+import budgetIcon from './assets/Gemini_Generated_Image_7dvgog7dvgog7dvg.jpg'
 
-const icons={
-  Transport: <FaCar/>,
-  Groceries:<FaShoppingCart/>,
-  Entertainment:<FaTv/>,
-}
 
 function Budgets (){
   const[budgets, setBudgets] =useState ([
@@ -73,7 +68,11 @@ function Budgets (){
 <tbody>
       {budgets.map((b) => (
               <tr key={b.id}>
-                <td>{icons[b.category]}{b.category}</td>
+                <td>  <span className="flex items-center gap-3">
+                <img src={budgetIcon} alt={b.category} className="w-8 h-8 object-cover rounded-md" />
+                  {b.category}
+                  </span>
+                  </td>
                 <td>R{b.target}</td>
                 <td>{b.date}</td>
                 <td>
@@ -140,3 +139,4 @@ function Budgets (){
 
 
 export default Budgets
+

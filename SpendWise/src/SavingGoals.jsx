@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import { FaPiggyBank, FaEdit, FaTrash } from 'react-icons/fa'
+import savingsIcon from './assets/Gemini_Generated_Image_59avso59avso59av.jpg'
 
 const accountOptions = ['Current Account', 'Savings', 'Credit Card', 'Cash']
 
@@ -60,15 +60,13 @@ function SavingGoals() {
          <div key={g.id} className="bg-[#1f1f1f] text-white p-5 rounded-2xl border border-zinc-800">
 
             <div className="flex items-center gap-3">
-               <div className="bg-white text-black rounded-lg p-1.5">
-              <FaPiggyBank size={26} />
-              </div>
+              <img src={savingsIcon} alt="Saving Goals" className="w-10 h-10 object-cover rounded-lg" />
               <h3 className="flex-1 text-xl font-bold">{g.name}</h3>
-              <button onClick={() => startEdit(g)} className="text-zinc-400 hover:text-white">
-                <FaEdit />
+              <button onClick={() => startEdit(g)} className="text-sm text-zinc-400 hover:text-white">
+              Edit
               </button>
-              <button onClick={() => handleDelete(g.id)} className="text-zinc-400 hover:text-white">
-                <FaTrash />
+              <button onClick={() => handleDelete(g.id)} className="text-sm text-zinc-400 hover:text-red-400">
+                  Delete
               </button>
             </div>
 
