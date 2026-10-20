@@ -104,14 +104,19 @@ function Budgets (){
 
 
 {/* Budget Form*/}
-<div className="form-box">
-  <h3>Create a new budget</h3>
+<div className="bg-[#181818] text-white p-6 rounded-2xl shadow-lg border border-zinc-800 mt-6 w-full">
+  <h3 className="text-lg font-bold mb-4">Create a new budget</h3>
 
-  <form onSubmit={handleSubmit}>
+  <form onSubmit={handleSubmit}className="flex items-end gap-4">
     {/* Field 1: category */}
-    <div className="form-field">
-      <label>Category</label>
-      <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+    <div className="flex-1">
+      <label className="block text-lg text-zinc-300 mb-2">Category</label>
+      <select 
+        value={category} 
+        onChange={(e) => setCategory(e.target.value)} 
+        className="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+        required>
+
         <option value="">Select category</option>
         <option value="Transport">Transport</option>
         <option value="Groceries">Groceries</option>
@@ -119,28 +124,33 @@ function Budgets (){
       </select>
     </div>
 
-    <div className="form-field">
-      <label>Target amount</label>
+    <div className="flex-1">
+      <label className="block text-lg text-zinc-300 mb-2">Target amount</label>
       <input
         type="number"
         placeholder="R 0.00"
         value={target}
         onChange={(e) => setTarget(e.target.value)}
+        className="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
         required
       />
     </div>
 
-    <div className="form-field">
-      <label>Target date</label>
+    <div className="flex-1">
+      <label className="block text-lg text-zinc-300 mb-2">Target date</label>
       <input
         type="date"
         value={date}
+        classname="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
         onChange={(e) => setDate(e.target.value)}
         required
       />
     </div>
    
-   <button type="submit">Create</button>
+   <button type="submit" className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-2.5 rounded-lg transition-colors">
+    Create
+   </button>
+
   </form>
 </div>
 </div>

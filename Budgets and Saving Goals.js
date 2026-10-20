@@ -1,6 +1,5 @@
 import { PGlite } from '@electric-sql/pglite'
 import express from 'express'
-import { Key, TouchpadOff } from 'lucide-react'
 
 const app=express()
 
