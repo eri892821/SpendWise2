@@ -269,27 +269,6 @@ const Dashboard =()=>{
 
 const App =()=>{
 
-
- 
-
-  <Router>
-     <nav>
-     <link to='/'/>
-     <link to='/Budgets'/>
-     <link to='/Categories'/>
-     <link to='/Savingsgoals'/>
-     <link to='/Savingsgoals'/>
-     
-  </nav>
-
-   <Routes>
-    <Route path='/Categories' element={<Cat/>} />
-   </Routes>
-
-</Router>
-
-
-
   
   return(
     <div className="flex min-h-screen w-screen m-0 p-0">
