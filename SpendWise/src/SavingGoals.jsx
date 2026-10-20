@@ -63,7 +63,8 @@ function SavingGoals() {
             target:Number(target), 
             date:date,
             saved:0,
-            details: ''
+            details: '',
+            contributions: []
           })
         )
       }
@@ -89,9 +90,15 @@ function SavingGoals() {
 
     const addContribution= (event)=>{
       event.preventDefault()
+       const newContribution = {
+        id: Date.now(),
+        amount: Number(amount),
+        date: new Date().toISOString().slice(0, 10),
+      }
       setGoals (
         goals.map((g) =>
-          g.id === openId ? {...g, saved: g.saved + Number(amount)} : g
+          g.id === openId ? 
+        {...g, saved: g.saved + Number(amount),contributions:[newContribution].concat(g.contributions)} : g
         )
       )
       setAmount('')
@@ -139,6 +146,10 @@ function SavingGoals() {
             <div className="mt-5 w-full h-2 bg-[#2e2e2e] rounded-full">
               <div className="h-full bg-blue-600 rounded-full" style={{ width: percent(g) + '%' }} />
             </div>
+
+            <p className="text-zinc-400 font-bold mt-2">
+              {formatMoney(g.saved)} of {formatMoney(g.target)}
+            </p>
 
            <p className="text-zinc-400 font-bold mt-5 mb-3">Linked accounts</p>
             <div className="flex flex-wrap gap-2">
@@ -249,12 +260,23 @@ function SavingGoals() {
               />
             </div>
             <p className="text-zinc-400 font-bold mb-4">
-              R{openGoal.saved} of R{openGoal.target}
+             {formatMoney(openGoal.saved)} of {formatMoney(openGoal.target)}
             </p>
 
         {/* date */}
-            <p className="text-zinc-400 font-bold mb-4">Target date: {openGoal.date}</p>
-
+            <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="bg-[#2e2e2e] rounded-lg p-3">
+          <p className="text-zinc-400 text-sm">Target date</p>
+          <p className="font-bold">{formatDate(openGoal.date)}</p>
+        </div>
+        <div className="bg-[#2e2e2e] rounded-lg p-3">
+          <p className="text-zinc-400 text-sm">Time left</p>
+          <p className="font-bold">
+            {daysLeft(openGoal.date) < 0 ? 'Overdue' : daysLeft(openGoal.date) + ' days'}
+          </p>
+        </div>
+      </div>
+             
         {/* details */}
             <label className="block text-zinc-400 font-bold mb-2">Details</label>
             <textarea
@@ -265,7 +287,8 @@ function SavingGoals() {
               className="w-full bg-[#2e2e2e] rounded-lg p-3 text-white placeholder-zinc-500 focus:outline-none mb-4"
             />
 
-        {/* record contribution */}
+        {/* Record contribution */}
+         <label className="block text-zinc-400 font-bold mb-2">Record a contribution</label>
             <form onSubmit={addContribution} className="flex gap-3">
               <input
                 type="number"
@@ -280,12 +303,30 @@ function SavingGoals() {
                 Add
               </button>
             </form>
-          </div>
+
+
+      {/*Contributions history*/}
+      <p className="text-zinc-400 font-bold mb-3">Contribution history</p>
+      {openGoal.contributions.length === 0 ? (
+        <p className="text-zinc-500">No contributions yet.</p>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {openGoal.contributions.map((c) => (
+            <div key={c.id} className="flex justify-between bg-[#2e2e2e] rounded-lg p-3">
+              <span className="font-bold">+ {formatMoney(c.amount)}</span>
+              <span className="text-zinc-400">{formatDate(c.date)}</span>
+            </div>
+          ))}
         </div>
       )}
-      </div>
+
+    </div>
+  </div>
+)}
+
+</div>
   )
-  }
+}
   
 
 export default SavingGoals
