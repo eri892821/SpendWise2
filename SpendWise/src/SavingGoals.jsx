@@ -53,7 +53,7 @@ function SavingGoals() {
 
   return (    
     <div>
-     <h2 className="text-2xl font-semibold text-white mb-4">Saving goals</h2>
+     <h2 className= "!text-5xl !font-bold mb-6">Saving goals</h2>
 
       <div className="grid grid-cols-3 gap-6">
         {goals.map((g) => (

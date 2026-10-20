@@ -105,7 +105,7 @@ function Budgets (){
 
 {/* Budget Form*/}
 <div className="bg-[#181818] text-white p-6 rounded-2xl shadow-lg border border-zinc-800 mt-6 w-full">
-  <h3 className="text-lg font-bold mb-4">Create a new budget</h3>
+  <h3 className="text-xl font-bold mb-4">Create a new budget</h3>
 
   <form onSubmit={handleSubmit}className="flex items-end gap-4">
     {/* Field 1: category */}
@@ -141,8 +141,8 @@ function Budgets (){
       <input
         type="date"
         value={date}
-        classname="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
         onChange={(e) => setDate(e.target.value)}
+        classname="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
         required
       />
     </div>
