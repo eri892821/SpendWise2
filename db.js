@@ -3,5 +3,4 @@ import express from 'express'
 
 const app=express()
 
-const db= new PGlite('./database')
-
+export const db= new PGlite('./database')
