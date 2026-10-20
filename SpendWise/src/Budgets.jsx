@@ -142,7 +142,7 @@ function Budgets (){
         type="date"
         value={date}
         onChange={(e) => setDate(e.target.value)}
-        classname="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+        classname="w-full bg-[#282828] border border-zinc-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-blue-500 [color-scheme:dark]"
         required
       />
     </div>
