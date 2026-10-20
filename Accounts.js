@@ -17,6 +17,12 @@ await db.exec (`
     
  `)
  
- const cols = `id , name , is_savings, initial _balance :float8 AS initial balance `
+ export const cols =`
+  id , 
+  name,
+  is_savings,
+  initial _balance :float8 AS "initial balance"
+  
+`
 
  //Server//
