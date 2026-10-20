@@ -1,6 +1,7 @@
 import {Routes, Route,NavLink,Outlet} from 'react-router-dom'
 
 import { useState } from 'react'
+import {BrowserRouter as Router, Link} from 'react-router-dom'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
@@ -14,10 +15,10 @@ import accounts from './assets/Gemini_Generated_Image_ov0r71ov0r71ov0r.jpg'
 import savings from './assets/Gemini_Generated_Image_u9cddpu9cddpu9cd.jpeg'
 import credit from './assets/Gemini_Generated_Image_sq2pjesq2pjesq2p.jpeg'
 
+import Categories from './Categories.jsx'
 import Dashboard from './Dashboard'
 import Accounts from './Accounts'
 import Budgets from './Budgets'
-import Categories from './Categories'
 import SavingGoals from './SavingGoals'
 
 const linkClass =({isActive})=>
