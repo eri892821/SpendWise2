@@ -37,21 +37,21 @@ function Budgets (){
     {/* Summary Card for Total Budgeted */}
   <div className="grid grid-cols-3 gap-6">
     <div className="bg-[#eef2f9] p-5 rounded-2xl shadow-sm w-64">
-    <p className="text-sm font-bold text-[#1d5bb4]"> Total Budgeted</p>
+    <p className="text-sm font-medium text-[#1d5bb4]"> Total Budgeted</p>
     <h3 className="text-2xl font-bold text-[#0c3162] mt-1">R5,000 </h3>
   </div>
 
    {/* Summary Card for Total Spent */}
    <div  className="bg-[#eef2f9] p-5 rounded-2xl shadow-sm" >
-    <p  className="text-sm font-bold text-[#1d5bb4]"> Total Spent</p>
+    <p  className="text-sm font-medium text-[#1d5bb4]"> Total Spent</p>
     <h3 className="text-2xl font-bold text-[#0c3162] mt-1">R4,860</h3>
   </div>
 
     {/* Summary Card for Over Spent */}
   <div className="bg-[#e4771d] p-5 rounded-2xl shadow-sm">
-    <p className="text-sm font-bold text-[#1d5bb4]"> Over Spent</p>
+    <p className="text-sm font-medium text-[#1d5bb4]"> Over Spent</p>
     <h3 className="text-2xl font-bold text-[#0c3162] mt-1">R80</h3>
-    <p className="text-sm font-bold text-[#1d5bb4]">Entertainment</p>
+    <p className="text-sm font-medium text-[#1d5bb4]">Entertainment</p>
     </div>
  </div>
 
@@ -87,12 +87,14 @@ function Budgets (){
                   className={`h-full rounded-full ${b.spent > b.target ? 'bg-orange-700' : 'bg-blue-600'}`}
                       style={{width: `${Math.min((b.spent / b.target) * 100, 100)}%`,
                        height: '100%',
-                      background: b.spent > b.target ? 'red' : '#0e63c5',
-                      }}
+                      background: b.spent > b.target ? 'red' : 'blue'}}
                      />
                  </div>
                  </td>
-                <td className="py-3 border-b border-zinc-600 text-zinc-300 text-right">R{b.spent}</td>
+                <td className="py-3 border-b border-zinc-600 text-zinc-300 text-right">
+                R{b.spent}
+                <button type="button" className="text-zinc-400 hover:text-white ml-3">•••</button>
+                </td>
               
               </tr>
             ))}
@@ -100,6 +102,8 @@ function Budgets (){
    </table>
   </div>  
 
+
+{/* Budget Form*/}
 <div className="form-box">
   <h3>Create a new budget</h3>
 
