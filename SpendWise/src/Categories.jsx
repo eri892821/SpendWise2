@@ -7,8 +7,7 @@ import budgetLogo from './assets/Gemini_Generated_Image_7dvgog7dvgog7dvg.jpg'
 import dashboardLogo from './assets/Gemini_Generated_Image_27pdd327pdd327pd.jpg'
 import savingGoals from './assets/Gemini_Generated_Image_59avso59avso59av.jpg'
 import accountsLogo from './assets/Gemini_Generated_Image_ov0r71ov0r71ov0r.jpg'
-import categoryService from './services/categories'
-import accountService from './services/accounts'
+
 
 
 const ICONS = { car: Car, 'shopping-cart': ShoppingCart, tv: Tv, tag: Tag }
