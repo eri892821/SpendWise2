@@ -296,13 +296,14 @@ const App =()=>{
         <main className="flex-1 bg-[#282828] min-h-screen text-white p-8">
             <Dashboard/>
         </main>
-        <Routes>
-    <Route path="/" element={<LayoutRoute/>}>
-      <Route index element={<Dashboard/>}/>
-      <Route path="/accounts" element={<Accounts/>}/>
-      <Route path="/budgets" element={<Budgets/>}/>
-      <Route path="/savinggoals" element={<SavingGoals/>}/>
-      <Route path="/categories" element={<Cat/>}/>
+
+  <Routes>
+    <Route path="/" element={<LayoutRoute />}>
+      <Route index element={<Dashboard />} />
+      <Route path="accounts" element={<Accounts />} />
+      <Route path="budgets" element={<Budgets />} />
+      <Route path="savinggoals" element={<SavingGoals />} />
+      <Route path="categories" element={<Cat/>} />
     </Route>
   </Routes>
     </div> 
