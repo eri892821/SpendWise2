@@ -1,17 +1,70 @@
 import { useState, useEffect } from 'react'
-import { Car, ShoppingCart, Tv, Tag } from 'lucide-react'
-import './App.css'
-import spendwiseLogo from './assets/Gemini_Generated_Image.jfif'
+
 import categoriesLogo from './assets/Gemini_Generated_Image_r5byi0r5byi0r5by.jpg'
 import budgetLogo from './assets/Gemini_Generated_Image_7dvgog7dvgog7dvg.jpg'
 import dashboardLogo from './assets/Gemini_Generated_Image_27pdd327pdd327pd.jpg'
 import savingGoals from './assets/Gemini_Generated_Image_59avso59avso59av.jpg'
 import accountsLogo from './assets/Gemini_Generated_Image_ov0r71ov0r71ov0r.jpg'
 
+/* ---------- icons (your imported images) ---------- */
 
+const icons = {
+  categories: categoriesLogo,
+  budget: budgetLogo,
+  dashboard: dashboardLogo,
+  savings: savingGoals,
+  accounts: accountsLogo,
+}
 
-const ICONS = { car: Car, 'shopping-cart': ShoppingCart, tv: Tv, tag: Tag }
-const getIcon = (key) => ICONS[key] ?? Tag
+const getIcon = (key) => icons[key] ?? categoriesLogo
+
+/* ---------- starting data + browser storage ---------- */
+
+const STORAGE_KEY = 'spendwise-categories'
+
+const defaultCategories = [
+  {
+    id: 1,
+    name: 'Groceries',
+    icon: 'budget',
+    budget: 6000,
+    transactions: [
+      { id: 1, date: '2026-08-28', amount: 200, account: 'Savings' },
+    ],
+  },
+  {
+    id: 2,
+    name: 'Transport',
+    icon: 'categories',
+    budget: 3000,
+    transactions: [],
+  },
+]
+
+const accounts = [
+  { id: 1, name: 'Savings' },
+  { id: 2, name: 'Credit card' },
+]
+
+const loadCategories = () => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved) return JSON.parse(saved)
+  } catch {
+    // storage unavailable or corrupted: fall back to the defaults
+  }
+  return defaultCategories
+}
+
+const saveCategories = (categories) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(categories))
+  } catch {
+    // ignore: the page still works without saving
+  }
+}
+
+/* ---------- helpers ---------- */
 
 const formatRand = (value) => `R${value.toLocaleString('en-US')}`
 
@@ -33,10 +86,15 @@ const parseDate = (input) => {
   return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`
 }
 
-
 const formatShortDate = (iso) =>
-  new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+  new Date(`${iso}T00:00:00`).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+  })
 
+const nextId = (items) => Math.max(0, ...items.map((item) => item.id)) + 1
+
+/* ---------- shared styles ---------- */
 
 const cardClass =
   'bg-[#1f1f1f] text-white rounded-2xl shadow-lg border border-zinc-800'
@@ -46,71 +104,7 @@ const inputClass =
 const primaryButtonClass =
   'bg-[#0e63c5] hover:bg-[#1a6fd1] text-white font-semibold rounded-lg px-5 py-2.5 text-sm transition-colors'
 
-
-const Sidebar = () => {
-  return (
-    <div className="w-64 min-h-screen bg-[#0e63c5] text-white antialiased p-6">
-      <div className="flex items-center gap-3 mb-8">
-        <img src={spendwiseLogo} alt="SpendWise Logo" className="w-10 h-10 object-cover rounded-md" />
-        <h2 className="!text-3xl !font-bold">SpendWise</h2>
-      </div>
-
-      <nav className="flex flex-col gap-4">
-        <div>
-          <button onClick={() => console.log('Dashboard clicked')} className="flex items-center gap-3 text-sm text-white/80 hover:text-white transition-colors">
-            <img src={dashboardLogo} alt="Dashboard logo" className="dashboard-icon w-8 h-8 object-cover rounded-md" />
-            Dashboard
-          </button>
-        </div>
-
-        <div>
-          <button onClick={() => console.log('Accounts clicked')} className="flex items-center gap-3 text-sm text-white/80 hover:text-white transition-colors">
-            <img src={accountsLogo} alt="Accounts logo" className="w-8 h-8 object-cover rounded-md" />
-            Accounts
-          </button>
-        </div>
-
-        <div className="text-sm text-white/80">
-          <button onClick={() => console.log('Budgets clicked')} className="flex items-center gap-3 text-sm text-white/80 hover:text-white transition-colors">
-            <img src={budgetLogo} alt="Budget logo" className="w-8 h-8 object-cover rounded-md" />
-            Budgets
-          </button>
-        </div>
-
-        <div className="text-sm text-white/80">
-          <button onClick={() => console.log('Saving goals clicked')} className="flex items-center gap-3 text-sm text-white/80 hover:text-white transition-colors">
-            <img src={savingGoals} alt="Saving goals logo" className="w-8 h-8 object-cover rounded-md" />
-            Saving goals
-          </button>
-        </div>
-
-        <div className="text-sm text-white/80">
-          <button onClick={() => console.log('Categories clicked')} className="flex items-center gap-3 text-sm text-white/80 hover:text-white transition-colors">
-            <img src={categoriesLogo} alt="Categories logo" className="w-8 h-8 object-cover rounded-md" />
-            Categories
-          </button>
-        </div>
-      </nav>
-    </div>
-  )
-}
-
-
-const Notification = ({ message }) => {
-  if (message === null) {
-    return null
-  }
-
-  return (
-    <div
-      role="alert"
-      className="bg-red-950/60 border border-red-800 text-red-200 text-sm rounded-lg px-4 py-3 mb-6"
-    >
-      {message}
-    </div>
-  )
-}
-
+/* ---------- components ---------- */
 
 const CategoryList = ({ categories, selectedId, onSelect, onAddClick }) => {
   return (
@@ -132,29 +126,29 @@ const CategoryList = ({ categories, selectedId, onSelect, onAddClick }) => {
       )}
 
       <ul className="flex flex-col gap-1">
-        {categories.map((category) => {
-          const Icon = getIcon(category.icon)
-
-          return (
-            <li key={category.id}>
-              <button
-                type="button"
-                onClick={() => onSelect(category.id)}
-                className={`w-full flex justify-between items-center gap-3 p-3 rounded-lg text-sm transition-colors ${
-                  category.id === selectedId ? 'bg-white/10' : 'hover:bg-white/5'
-                }`}
-              >
-                <span className="flex items-center gap-3 font-bold text-white/80">
-                  <Icon size={20} strokeWidth={1.6} />
-                  {category.name}
-                </span>
-                <span className="text-zinc-300">
-                  {formatRand(getSpent(category))}/{formatRand(category.budget)}
-                </span>
-              </button>
-            </li>
-          )
-        })}
+        {categories.map((category) => (
+          <li key={category.id}>
+            <button
+              type="button"
+              onClick={() => onSelect(category.id)}
+              className={`w-full flex justify-between items-center gap-3 p-3 rounded-lg text-sm transition-colors ${
+                category.id === selectedId ? 'bg-white/10' : 'hover:bg-white/5'
+              }`}
+            >
+              <span className="flex items-center gap-3 font-bold text-white/80">
+                <img
+                  src={getIcon(category.icon)}
+                  alt=""
+                  className="w-8 h-8 object-cover rounded-md"
+                />
+                {category.name}
+              </span>
+              <span className="text-zinc-300">
+                {formatRand(getSpent(category))}/{formatRand(category.budget)}
+              </span>
+            </button>
+          </li>
+        ))}
       </ul>
     </div>
   )
@@ -162,7 +156,6 @@ const CategoryList = ({ categories, selectedId, onSelect, onAddClick }) => {
 
 const BudgetSummary = ({ category }) => {
   const { name, icon, budget } = category
-  const Icon = getIcon(icon)
 
   const spent = getSpent(category)
   const overBudget = spent > budget
@@ -172,7 +165,11 @@ const BudgetSummary = ({ category }) => {
   return (
     <div className={`${cardClass} p-5`}>
       <div className="flex items-center gap-3 mb-4">
-        <Icon size={34} strokeWidth={1.6} />
+        <img
+          src={getIcon(icon)}
+          alt=""
+          className="w-10 h-10 object-cover rounded-md"
+        />
         <div>
           <h3 className="text-xl font-bold leading-tight">{name}</h3>
           <p className="text-sm text-zinc-400">
@@ -207,8 +204,7 @@ const BudgetSummary = ({ category }) => {
   )
 }
 
-
-const AddTransactionForm = ({ categoryName, accounts, onAdd }) => {
+const AddTransactionForm = ({ categoryName, onAdd }) => {
   const [date, setDate] = useState('')
   const [amount, setAmount] = useState('')
   const [account, setAccount] = useState('')
@@ -371,7 +367,7 @@ const AddCategoryPopup = ({ onAdd, onClose }) => {
               type="number"
               min="0"
               step="0.01"
-              placeholder="R1000"
+              placeholder="1000"
               className={inputClass}
               value={budget}
               onChange={(event) => setBudget(event.target.value)}
@@ -393,105 +389,78 @@ const AddCategoryPopup = ({ onAdd, onClose }) => {
   )
 }
 
+/* ---------- page ---------- */
 
 const Categories = () => {
-  const [categories, setCategories] = useState(null) 
-  const [accounts, setAccounts] = useState([])
+  const [categories, setCategories] = useState(loadCategories)
   const [selectedId, setSelectedId] = useState(null)
   const [showPopup, setShowPopup] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(null)
-
-  const notify = (message) => {
-    setErrorMessage(message)
-    setTimeout(() => setErrorMessage(null), 5000)
-  }
+  
 
   useEffect(() => {
-    categoryService
-      .getAll()
-      .then((initialCategories) => setCategories(initialCategories))
-      .catch(() =>
-        notify('Could not load categories. Is json-server running on port 3001?')
-      )
-
-    accountService
-      .getAll()
-      .then((initialAccounts) => setAccounts(initialAccounts))
-      .catch(() => notify('Could not load accounts.'))
-  }, [])
+    saveCategories(categories)
+  }, [categories])
 
   const selected =
-    categories?.find((category) => category.id === selectedId) ?? categories?.[0]
+    categories.find((category) => category.id === selectedId) ?? categories[0]
 
   const addCategory = (name, budget) => {
-    const newCategory = { name, icon: 'tag', budget, transactions: [] }
+    const newCategory = {
+      id: nextId(categories),
+      name,
+      icon: 'categories',
+      budget,
+      transactions: [],
+    }
 
-    categoryService
-      .create(newCategory)
-      .then((createdCategory) => {
-        setCategories(categories.concat(createdCategory))
-        setSelectedId(createdCategory.id)
-        setShowPopup(false)
-      })
-      .catch(() => notify('Could not add the category.'))
+    setCategories((prev) => prev.concat(newCategory))
+    setSelectedId(newCategory.id)
+    setShowPopup(false)
   }
 
   const addTransaction = (transaction) => {
-    const nextId = Math.max(0, ...selected.transactions.map((t) => t.id)) + 1
-
-    const changedCategory = {
-      ...selected,
-      transactions: [{ id: nextId, ...transaction }, ...selected.transactions].sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-      ),
-    }
-
-    categoryService
-      .update(selected.id, changedCategory)
-      .then((returnedCategory) => {
-        setCategories(
-          categories.map((category) =>
-            category.id !== selected.id ? category : returnedCategory
-          )
-        )
-      })
-      .catch(() => notify('Could not save the transaction.'))
+    setCategories((prev) =>
+      prev.map((category) =>
+        category.id !== selected.id
+          ? category
+          : {
+              ...category,
+              transactions: [
+                { id: nextId(category.transactions), ...transaction },
+                ...category.transactions,
+              ].sort((a, b) => new Date(b.date) - new Date(a.date)),
+            }
+      )
+    )
   }
 
   return (
     <div>
       <h2 className="!text-5xl !font-bold mb-6">Categories</h2>
 
-      <Notification message={errorMessage} />
+      <div className="flex flex-row gap-6 items-start">
+        <CategoryList
+          categories={categories}
+          selectedId={selected?.id}
+          onSelect={setSelectedId}
+          onAddClick={() => setShowPopup(true)}
+        />
 
-      {categories === null ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="flex flex-row gap-6 items-start">
-          <CategoryList
-            categories={categories}
-            selectedId={selected?.id}
-            onSelect={setSelectedId}
-            onAddClick={() => setShowPopup(true)}
-          />
-
-          {selected ? (
-            <div className="flex flex-col gap-6 flex-1 max-w-3xl">
-              <BudgetSummary category={selected} />
-              <AddTransactionForm
-                categoryName={selected.name}
-                accounts={accounts}
-                onAdd={addTransaction}
-              />
-              <TransactionTable transactions={selected.transactions} />
-            </div>
-          ) : (
-            <div className={`${cardClass} p-5 text-zinc-400`}>
-              Add a category with the + button to get started.
-            </div>
-          )}
-        </div>
-      )}
+        {selected ? (
+          <div className="flex flex-col gap-6 flex-1 max-w-3xl">
+            <BudgetSummary category={selected} />
+            <AddTransactionForm
+              categoryName={selected.name}
+              onAdd={addTransaction}
+            />
+            <TransactionTable transactions={selected.transactions} />
+          </div>
+        ) : (
+          <div className={`${cardClass} p-5 text-zinc-400`}>
+            Add a category with the + button to get started.
+          </div>
+        )}
+      </div>
 
       {showPopup && (
         <AddCategoryPopup
@@ -503,15 +472,4 @@ const Categories = () => {
   )
 }
 
-const Cat = () => {
-  return (
-    <div className="flex min-h-screen w-full m-0 p-0">
-      <Sidebar />
-      <main className="flex-1 bg-[#282828] min-h-screen text-white p-8">
-        <Categories />
-      </main>
-    </div>
-  )
-}
-
-export default Cat
+export default Categories
