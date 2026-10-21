@@ -101,4 +101,30 @@ const contribs= await db.query (`
 
 
 //5. Create Savings Goal- Allows users to add a new goal
-export async function createGoal({})
+export async function createGoal({name,accountId,target,date}){
+    const result=await db.query(
+       `INSERT INTO savings_goals (name,accountId, target, target_date)
+         VALUES ($1, $2, $3, $4) RETURNING id`,
+         [name, acountId,target,date]
+    )
+    const [goal]=await getGoals(result.rows[o].id)
+    return goal
+
+   if (result.rows.length===0) return null
+   const [goal]=await getGoals(id)
+   return goal
+}
+
+//6. Updating Saving Goal-editing goal's name,account, target amount or date
+export async function updateGoal (id,{name,accountId,target,date}){
+    const result=await db.query(
+        `UPDATE saving_goals
+        SET name=$1, account_id=$2, target=$3, target_date=$4
+        WHERE id =$5 RETURNING id`,
+        [name,accountId,target,date,id]
+    )
+
+    if (result.rows.length===0) return null
+      const [goal]=await getGoals(id)
+      return goal
+}
