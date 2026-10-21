@@ -74,5 +74,31 @@ export async function getGoals(id){
 }
 
 //3. Retrieves contributions to goals
+const contribs= await db.query (`
+    SELECT id, goal_id, amount::float AS amount,
+         to_char(contribution_date,'YYYY-MM-DD' AS date
+    FROM contributions
+    ${id ? 'WHERE goal_id = $1' : ''}
+    ORDER BY id DESC`, params)
 
 
+//4. This renders the data the way the page expects
+ return goals.row.map ((g)=>({
+    id: g.id,
+    name: g.name,
+    accountId: g.accountId,
+    accounts:[g.account_name],     //acount name gets wrapped, as page expect account options to be displayed as a list
+    target: g.target,
+    saved: g.saved,
+    date: g.date,
+    details: g.details,
+
+    contributions:contribs.rows             // filters so that only the contributions related to goal is displayed
+      .filter((c)=>c.goal_id===g.id)
+      .map((c)=>({id:c.id, amount:c.amount,date:c.date})),
+ }))
+}
+
+
+//5. Create Savings Goal- Allows users to add a new goal
+export async function createGoal({})
