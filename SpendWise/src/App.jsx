@@ -80,16 +80,6 @@ const Sidebar =({})=>{
   )
 
 }
-
-const Dashboard =()=>`{`
-
-  const [Popup,setPopup] = useState(false)
-  const [Pop,setPop] = useState(false)
-  const handleBudget =(e)=>{
-    e.preventDefault();
-    setPop(false)
-  }
-
 const LayoutRoute =()=>(
   <div className="flex min-h-screen w-screen m-0 p-0">
     <Sidebar/>
