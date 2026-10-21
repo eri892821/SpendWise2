@@ -141,6 +141,22 @@ export async function deleteGoal(id){
 //8. Saving the details(description) of a Savings Goal in the popup form
  export async function saveDetails (id,details){
     const result=await db.query(
-        'UPDATE savings_goals SET details =$1 WHERE id=
+        'UPDATE savings_goals SET details =$1 WHERE id=$2 RETURNING id',
+        [details,id]
     )
+    return result.rows.length> 0
+ }
+
+ //9. Add contribution- allows the user to record contributions made to Saving Goal
+ export async function addContribution(goalId, amount){
+    const exists=await db.query ('SELECT id FROM savings_goals WHERE id= $1, 
+    [goalId])
+    if (exists.rows.length ===0) return null
+
+    await db.query(
+        'INSERT INTO contributions (goal_id,amount) VALUES ($1, $2)',
+        [goalId, amount]
+    )
+
+
  }
