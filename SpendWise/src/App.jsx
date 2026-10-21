@@ -1,10 +1,7 @@
 import {Routes, Route,NavLink,Outlet} from 'react-router-dom'
 
 import { useState } from 'react'
-import {
-  BrowserRouter as Router,
-  Routes, Route, Link
-} from 'react-router-dom'
+
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
@@ -22,7 +19,7 @@ import Cat from './Categories.jsx'
 import Dashboard from './Dashboard'
 import Accounts from './Accounts'
 import Budgets from './Budgets'
-import Categories from './Categories'
+
 import SavingGoals from './SavingGoals'
 
 const linkClass =({isActive})=>
@@ -84,6 +81,15 @@ const Sidebar =({})=>{
   )
 
 }
+
+const Dashboard =()=>{
+
+  const [Popup,setPopup] = useState(false)
+  const [Pop,setPop] = useState(false)
+  const handleBudget =(e)=>{
+    e.preventDefault();
+    setPop(false)
+  }
 
 const LayoutRoute =()=>(
   <div className="flex min-h-screen w-screen m-0 p-0">
@@ -279,7 +285,7 @@ const LayoutRoute =()=>(
 
   )
    
-
+}
 
 const App =()=>{
 
