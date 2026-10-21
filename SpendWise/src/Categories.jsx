@@ -1,4 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import {
+  getCategories,
+  getAccounts,
+  addCategory as dbAddCategory,
+  addTransaction as dbAddTransaction,
+} from './db'
 
 import categoriesLogo from './assets/Gemini_Generated_Image_r5byi0r5byi0r5by.jpg'
 import budgetLogo from './assets/Gemini_Generated_Image_7dvgog7dvgog7dvg.jpg'
@@ -6,7 +12,7 @@ import dashboardLogo from './assets/Gemini_Generated_Image_27pdd327pdd327pd.jpg'
 import savingGoals from './assets/Gemini_Generated_Image_59avso59avso59av.jpg'
 import accountsLogo from './assets/Gemini_Generated_Image_ov0r71ov0r71ov0r.jpg'
 
-/* ---------- icons (your imported images) ---------- */
+
 
 const icons = {
   categories: categoriesLogo,
@@ -18,53 +24,15 @@ const icons = {
 
 const getIcon = (key) => icons[key] ?? categoriesLogo
 
-/* ---------- starting data + browser storage ---------- */
 
-const STORAGE_KEY = 'spendwise-categories'
-
-const defaultCategories = [
-  {
-    id: 1,
-    name: 'Groceries',
-    icon: 'budget',
-    budget: 6000,
-    transactions: [
-      { id: 1, date: '2026-08-28', amount: 200, account: 'Savings' },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Transport',
-    icon: 'categories',
-    budget: 3000,
-    transactions: [],
-  },
-]
-
-const accounts = [
-  { id: 1, name: 'Savings' },
-  { id: 2, name: 'Credit card' },
-]
-
-const loadCategories = () => {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved) return JSON.parse(saved)
-  } catch {
-    // storage unavailable or corrupted: fall back to the defaults
-  }
-  return defaultCategories
-}
-
-const saveCategories = (categories) => {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(categories))
-  } catch {
-    // ignore: the page still works without saving
-  }
-}
-
-/* ---------- helpers ---------- */
+const normaliseCategory = (category) => ({
+  ...category,
+  budget: Number(category.budget),
+  transactions: (category.transactions ?? []).map((t) => ({
+    ...t,
+    amount: Number(t.amount),
+  })),
+})
 
 const formatRand = (value) => `R${value.toLocaleString('en-US')}`
 
@@ -87,14 +55,12 @@ const parseDate = (input) => {
 }
 
 const formatShortDate = (iso) =>
-  new Date(`${iso}T00:00:00`).toLocaleDateString('en-GB', {
+  new Date(`${String(iso).slice(0, 10)}T00:00:00`).toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short',
   })
 
-const nextId = (items) => Math.max(0, ...items.map((item) => item.id)) + 1
 
-/* ---------- shared styles ---------- */
 
 const cardClass =
   'bg-[#1f1f1f] text-white rounded-2xl shadow-lg border border-zinc-800'
@@ -104,7 +70,19 @@ const inputClass =
 const primaryButtonClass =
   'bg-[#0e63c5] hover:bg-[#1a6fd1] text-white font-semibold rounded-lg px-5 py-2.5 text-sm transition-colors'
 
-/* ---------- components ---------- */
+
+const Notification = ({ message }) => {
+  if (message === null) return null
+
+  return (
+    <div
+      role="alert"
+      className="bg-red-950/60 border border-red-800 text-red-200 text-sm rounded-lg px-4 py-3 mb-6"
+    >
+      {message}
+    </div>
+  )
+}
 
 const CategoryList = ({ categories, selectedId, onSelect, onAddClick }) => {
   return (
@@ -204,15 +182,16 @@ const BudgetSummary = ({ category }) => {
   )
 }
 
-const AddTransactionForm = ({ categoryName, onAdd }) => {
+const AddTransactionForm = ({ categoryName, accounts, onAdd }) => {
   const [date, setDate] = useState('')
   const [amount, setAmount] = useState('')
   const [account, setAccount] = useState('')
   const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
 
   const selectedAccount = account || accounts[0]?.name || ''
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     const isoDate = parseDate(date)
     const value = parseFloat(amount)
@@ -221,10 +200,15 @@ const AddTransactionForm = ({ categoryName, onAdd }) => {
     if (!value || value <= 0) return setError('Enter an amount above R0.')
     if (!selectedAccount) return setError('Choose an account.')
 
-    onAdd({ date: isoDate, amount: value, account: selectedAccount })
-    setDate('')
-    setAmount('')
-    setError('')
+    setSaving(true)
+    const ok = await onAdd({ date: isoDate, amount: value, account: selectedAccount })
+    setSaving(false)
+
+    if (ok) {
+      setDate('')
+      setAmount('')
+      setError('')
+    }
   }
 
   return (
@@ -274,8 +258,12 @@ const AddTransactionForm = ({ categoryName, onAdd }) => {
           </select>
         </label>
 
-        <button type="submit" className={`${primaryButtonClass} col-start-3`}>
-          Add
+        <button
+          type="submit"
+          disabled={saving}
+          className={`${primaryButtonClass} col-start-3 disabled:opacity-60`}
+        >
+          {saving ? 'Saving...' : 'Add'}
         </button>
       </form>
 
@@ -323,15 +311,18 @@ const AddCategoryPopup = ({ onAdd, onClose }) => {
   const [name, setName] = useState('')
   const [budget, setBudget] = useState('')
   const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     const value = parseFloat(budget)
 
     if (!name.trim()) return setError('Enter a category name.')
     if (!value || value <= 0) return setError('Enter a monthly budget above R0.')
 
-    onAdd(name.trim(), value)
+    setSaving(true)
+    await onAdd(name.trim(), value)
+    setSaving(false)
   }
 
   return (
@@ -380,8 +371,12 @@ const AddCategoryPopup = ({ onAdd, onClose }) => {
             </p>
           )}
 
-          <button type="submit" className={primaryButtonClass}>
-            Save category
+          <button
+            type="submit"
+            disabled={saving}
+            className={`${primaryButtonClass} disabled:opacity-60`}
+          >
+            {saving ? 'Saving...' : 'Save category'}
           </button>
         </form>
       </div>
@@ -392,75 +387,109 @@ const AddCategoryPopup = ({ onAdd, onClose }) => {
 /* ---------- page ---------- */
 
 const Categories = () => {
-  const [categories, setCategories] = useState(loadCategories)
+  const [categories, setCategories] = useState(null) // null = still loading
+  const [accounts, setAccounts] = useState([])
   const [selectedId, setSelectedId] = useState(null)
   const [showPopup, setShowPopup] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const timerRef = useRef(null)
 
-
-  useEffect(() => {
-    saveCategories(categories)
-  }, [categories])
-
-  const selected =
-    categories.find((category) => category.id === selectedId) ?? categories[0]
-
-  const addCategory = (name, budget) => {
-    const newCategory = {
-      id: nextId(categories),
-      name,
-      icon: 'categories',
-      budget,
-      transactions: [],
-    }
-
-    setCategories((prev) => prev.concat(newCategory))
-    setSelectedId(newCategory.id)
-    setShowPopup(false)
+  const notify = (message) => {
+    clearTimeout(timerRef.current)
+    setErrorMessage(message)
+    timerRef.current = setTimeout(() => setErrorMessage(null), 5000)
   }
 
-  const addTransaction = (transaction) => {
-    setCategories((prev) =>
-      prev.map((category) =>
-        category.id !== selected.id
-          ? category
-          : {
-              ...category,
-              transactions: [
-                { id: nextId(category.transactions), ...transaction },
-                ...category.transactions,
-              ].sort((a, b) => new Date(b.date) - new Date(a.date)),
-            }
-      )
-    )
+  const loadCategories = async () => {
+    const data = await getCategories()
+    setCategories(data.map(normaliseCategory))
+  }
+
+  useEffect(() => {
+    let cancelled = false
+
+    const load = async () => {
+      try {
+        const [categoryData, accountData] = await Promise.all([
+          getCategories(),
+          getAccounts(),
+        ])
+        if (cancelled) return
+        setCategories(categoryData.map(normaliseCategory))
+        setAccounts(accountData)
+      } catch {
+        if (cancelled) return
+        setCategories([])
+        notify('Could not load data from the database.')
+      }
+    }
+
+    load()
+
+    return () => {
+      cancelled = true
+      clearTimeout(timerRef.current)
+    }
+  }, [])
+
+  const selected =
+    categories?.find((category) => category.id === selectedId) ?? categories?.[0]
+
+  const addCategory = async (name, budget) => {
+    try {
+      await dbAddCategory({ name, icon: 'categories', budget })
+      await loadCategories()
+      setShowPopup(false)
+    } catch {
+      notify('Could not add the category.')
+    }
+  }
+
+  const addTransaction = async (transaction) => {
+    try {
+      await dbAddTransaction(selected.id, transaction)
+      await loadCategories()
+      return true
+    } catch {
+      notify('Could not save the transaction.')
+      return false
+    }
   }
 
   return (
     <div>
       <h2 className="!text-5xl !font-bold mb-6">Categories</h2>
 
-      <div className="flex flex-row gap-6 items-start">
-        <CategoryList
-          categories={categories}
-          selectedId={selected?.id}
-          onSelect={setSelectedId}
-          onAddClick={() => setShowPopup(true)}
-        />
+      <Notification message={errorMessage} />
 
-        {selected ? (
-          <div className="flex flex-col gap-6 flex-1 max-w-3xl">
-            <BudgetSummary category={selected} />
-            <AddTransactionForm
-              categoryName={selected.name}
-              onAdd={addTransaction}
-            />
-            <TransactionTable transactions={selected.transactions} />
-          </div>
-        ) : (
-          <div className={`${cardClass} p-5 text-zinc-400`}>
-            Add a category with the + button to get started.
-          </div>
-        )}
-      </div>
+      {categories === null ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="flex flex-row gap-6 items-start">
+          <CategoryList
+            categories={categories}
+            selectedId={selected?.id}
+            onSelect={setSelectedId}
+            onAddClick={() => setShowPopup(true)}
+          />
+
+          {selected ? (
+            <div className="flex flex-col gap-6 flex-1 max-w-3xl">
+              <BudgetSummary category={selected} />
+              <AddTransactionForm
+                categoryName={selected.name}
+                accounts={accounts}
+                onAdd={addTransaction}
+              />
+              <TransactionTable transactions={selected.transactions} />
+            </div>
+          ) : (
+            <div className={`${cardClass} p-5 text-zinc-400`}>
+              Add a category with the + button to get started.
+            </div>
+          )}
+        </div>
+      )}
 
       {showPopup && (
         <AddCategoryPopup

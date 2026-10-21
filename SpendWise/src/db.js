@@ -1,6 +1,6 @@
 import { PGlite } from '@electric-sql/pglite'
 
-export const db= new PGlite('./database/pgdata')
+export const db= new PGlite('idb://spendwise')
 
 // Accounts SQL table
 await db.exec (`
@@ -155,3 +155,112 @@ export async function deleteGoal(id){
     const [goal]= await getGoals(goalId)
     return goal
  }
+
+ // CATEGOGRIES BACKEND
+
+ const setup = async()=>{
+    await db.exec(`
+        CREATE TABLE IF NOT EXISTS accounts(
+            id SERIAL PRIMARY KEY,
+            NAME TEXT NOT NULL UNIQUE
+            );
+
+        CREATE TABLE IF NOT EXISTS categories(
+            id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL,
+            icon TEXT NOT NULL DEFAULT 'categories',
+            budget NUMERIC(12, 2) not null check (BUDGET >=0)
+        );
+
+        CREATE TABLE IF NOT EXISTS transactions(
+            id SERIAL PRIMARY KEY,
+            category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
+            account_id INTEGER NOT NULL REFERENCES accounts(id),
+            amount NUMERIC(12, 2) not null check (amount >0),
+            date DATE NOT NULL
+        );
+    `)
+
+// Initial data of categories before any any categories are made.
+
+const {rows} = await db.query('SELECT COUNT(*)::int AS count FROM accounts')
+if (rows[0].count === 0) {
+    await db.exec(`
+        INSERT INTO accounts (name) VALUES ('Savings'), ('Credit card');
+
+        INSERT INTO categories (name, icon, budget) VALUES
+        ('Groceries', 'budget', 6000),
+        ('Transport', 'categories', 3000);
+
+        INSERT INTO transactions (category_id, account_id, amount, date) VALUES
+        (1, 1, 200, '2026-08-28');
+        `)
+    }
+    }
+
+
+// getCategories
+const ready = setup()
+
+export const getCategories = async () => {
+    await ready
+    const {rows} = await db.query(`
+        SELECT
+        c.id,
+        c.name,
+        c.icon,
+        c.budget,
+        COALESCE(
+        json_agg(
+            json_build_object(
+            'id', t.id,
+            'date', to_char(t.date, 'YYYY-MM-DD'),
+            'amount', t.amount,
+            'account', a.name
+            )
+            ORDER BY t.date DESC, t.id DESC
+    ) FILTER (WHERE t.id IS NOT NULL), 
+     '[]'::json) AS transactions
+    FROM categories c
+    LEFT JOIN transactions t ON t.category_id = c.id
+    LEFT JOIN accounts a ON a.id = t.account_id
+    GROUP BY c.id
+    ORDER BY c.id;
+    `)
+return rows 
+    }
+
+    // getAccounts
+export const getAccounts = async () => {
+    await ready
+
+    const {rows} = await db.query('SELECT id, name FROM accounts ORDER BY id')
+    return rows
+}
+
+// AddCategory
+export const addCategory = async ({name, icon = 'categories', budget}) => {
+    await ready
+    await db.query(
+        'INSERT INTO categories (name, icon, budget) VALUES ($1, $2, $3)',
+        [name, icon, budget]
+    )
+}
+
+//AddTransaction
+export const addTransaction = async (categoryId, {date, amount, account}) => {
+    await ready
+
+    const { rows } = await db.query(
+    `INSERT INTO transactions (category_id, account_id, amount, date)
+     SELECT $1::int, a.id, $3::numeric, $4::date
+     FROM accounts a
+     WHERE a.name = $2
+     RETURNING id`,
+    [categoryId, account, amount, date]
+  )
+
+  if (rows.length === 0) {
+    throw new Error(`Account "${account}" does not exist.`)
+    }
+}
