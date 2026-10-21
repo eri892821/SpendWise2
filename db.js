@@ -46,4 +46,33 @@ CREATE TABLE IF NOT EXISTS contributions (
 
 // SAVING GOALS QUERIES
 
-// Account Options for saving goals
+// 1.Account Options for dropdown menu in Saving Goals
+export async function getAccountOptions (){
+    const result=await db.query ('SELECT id, name FROM accounts ORDER by name')
+    return result.rows
+}
+
+//2. Function that fetches the goals, so it displays on page
+export async function getGoals(id){
+    const params=id?[id]: []
+
+    const goals= await db.query(`
+      SELECT g.id,g.name,                
+      g.account_id AS "accountId", 
+      a.name AS account_name,
+      g.target::float AS target,
+      to_char(g.target_date, 'YYYY_MM_DD') AS date,
+      g.details,
+      COALESCE (SUM(c.amount),0)::float AS saved
+    FROM savings_goals g
+    JOIN accounts a ON a.id=g.account_id
+    LEFT JOIN contributions c ON c.goal_id = g.id
+    ${id? 'WHERE g.id=$1':''}
+    GROUP BY g.id, a.id
+    ORDER BY g.id',params)
+        `)
+}
+
+//3. Retrieves contributions to goals
+
+
