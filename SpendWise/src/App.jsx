@@ -1,3 +1,5 @@
+import {Routes, Route,NavLink,Outlet} from 'react-router-dom'
+
 import { useState } from 'react'
 import {
   BrowserRouter as Router,
@@ -17,6 +19,18 @@ import savings from './assets/Gemini_Generated_Image_u9cddpu9cddpu9cd.jpeg'
 import credit from './assets/Gemini_Generated_Image_sq2pjesq2pjesq2p.jpeg'
 import Cat from './Categories.jsx'
 
+import Dashboard from './Dashboard'
+import Accounts from './Accounts'
+import Budgets from './Budgets'
+import Categories from './Categories'
+import SavingGoals from './SavingGoals'
+
+const linkClass =({isActive})=>
+  `flex items-center gap-3 text-sm hover:text-white transition-colors ${
+    isActive ? 'text-white font-bold' : 'text-white/80'
+  }`
+
+
 const Sidebar =({})=>{
 
   return(
@@ -30,38 +44,38 @@ const Sidebar =({})=>{
       <nav className="flex flex-col gap-4">
 
         <div>
-          <button onClick={() => console.log('Dashboard clicked')} className="flex items-center gap-3 text-sm text-white/80 hover:text-white transition-colors">
+         <NavLink to="/" end className={linkClass}>
             <img src={dashboardLogo} alt = "Dasboard logo" className ="dashboard-icon w-8 h-8 object-cover rounded-md" />
             Dashboard
-          </button>
+          </NavLink>
         </div>
 
         <div>
-          <button onClick={() => console.log('Accounts clicked')} className="flex items-center gap-3 text-sm text-white/80 hover:text-white transition-colors">
+          <NavLink to="/accounts" className={linkClass}>
               <img src={accounts} alt = "Accounts logo" className ="w-8 h-8 object-cover rounded-md" />
               Accounts
-          </button>
+          </NavLink>
         </div>
 
         <div className="text-sm text-white/80">
-          <button onClick={() => console.log('Budgets clicked')} className="flex items-center gap-3 text-sm text-white/80 hover:text-white transition-colors">
+          <NavLink to="/budgets" className={linkClass}>
             <img src={budget} alt = "Budget logo" className ="w-8 h-8 object-cover rounded-md" />
             Budgets
-          </button>
+          </NavLink>
         </div>
 
         <div className="text-sm text-white/80">
-          <button onClick={() => console.log('Saving goals clicked')} className="flex items-center gap-3 text-sm text-white/80 hover:text-white transition-colors">
+          <NavLink to="/savinggoals" className={linkClass}>
             <img src={savingGoals} alt = "Saving goals logo" className ="w-8 h-8 object-cover rounded-md" />
             Saving goals
-          </button>
+          </NavLink>
         </div>
 
         <div className="text-sm text-white/80">
-          <button onClick={() => console.log('Categories clicked')} className="flex items-center gap-3 text-sm text-white/80 hover:text-white transition-colors">
+          <NavLink to="/categories" className={linkClass}>
             <img src={categories} alt = "Categories logo" className ="w-8 h-8 object-cover rounded-md" />
             Categories
-          </button>
+          </NavLink>
         </div>
       </nav>
       
@@ -71,14 +85,14 @@ const Sidebar =({})=>{
 
 }
 
-const Dashboard =()=>{
-
-  const [Popup,setPopup] = useState(false)
-  const [Pop,setPop] = useState(false)
-  const handleBudget =(e)=>{
-    e.preventDefault();
-    setPop(false)
-  }
+const LayoutRoute =()=>(
+  <div className="flex min-h-screen w-screen m-0 p-0">
+    <Sidebar/>
+      <main className="flex-1 bg-[#282828] min-h-screen text-white p-8">
+        <Outlet/>
+      </main>
+  </div> 
+)
 
   const handleSubmit = (q)=>{
     q.preventDefault();
@@ -265,7 +279,7 @@ const Dashboard =()=>{
 
   )
    
-}
+
 
 const App =()=>{
 
@@ -276,7 +290,17 @@ const App =()=>{
         <main className="flex-1 bg-[#282828] min-h-screen text-white p-8">
             <Dashboard/>
         </main>
+        <Routes>
+    <Route path="/" element={<LayoutRoute/>}>
+      <Route index element={<Dashboard/>}/>
+      <Route path="/accounts" element={<Accounts/>}/>
+      <Route path="/budgets" element={<Budgets/>}/>
+      <Route path="/savinggoals" element={<SavingGoals/>}/>
+      <Route path="/categories" element={<Cat/>}/>
+    </Route>
+  </Routes>
     </div> 
+  
   )
 }
 export default App;
