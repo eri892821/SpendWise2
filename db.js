@@ -128,3 +128,19 @@ export async function updateGoal (id,{name,accountId,target,date}){
       const [goal]=await getGoals(id)
       return goal
 }
+
+//7. Delete a Savings Goal
+export async function deleteGoal(id){
+    const result=await db.query(
+        'DELETE FROM savings_goals WHERE id=$1 returning id',
+        [id]
+    )
+    return result.rows.length>0
+}
+
+//8. Saving the details(description) of a Savings Goal in the popup form
+ export async function saveDetails (id,details){
+    const result=await db.query(
+        'UPDATE savings_goals SET details =$1 WHERE id=
+    )
+ }
