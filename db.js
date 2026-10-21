@@ -149,7 +149,9 @@ export async function deleteGoal(id){
 
  //9. Add contribution- allows the user to record contributions made to Saving Goal
  export async function addContribution(goalId, amount){
-    const exists=await db.query ('SELECT id FROM savings_goals WHERE id= $1, 
+    
+    // query checks if the goal exists
+    const exists=await db.query ('SELECT id FROM savings_goals WHERE id= $1,       
     [goalId])
     if (exists.rows.length ===0) return null
 
@@ -157,6 +159,6 @@ export async function deleteGoal(id){
         'INSERT INTO contributions (goal_id,amount) VALUES ($1, $2)',
         [goalId, amount]
     )
-
-
+    const [goal]= await getGoals(goalId)
+    return goal
  }
