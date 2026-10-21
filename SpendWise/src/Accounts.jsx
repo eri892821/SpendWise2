@@ -121,7 +121,7 @@ function Accounts({
           <h1>Accounts</h1>
         </header>
 
-        <section className="accounts-summary" aria-label="Account summary">
+        <section className="accounts-summary" aria-label="account summary">
           <div>
             <p className="accounts-summary-label">Total balance</p>
             <p className="accounts-summary-amount">{formatRand(totalBalance)}</p>

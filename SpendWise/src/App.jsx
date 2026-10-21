@@ -1,7 +1,7 @@
 import {Routes, Route,NavLink,Outlet} from 'react-router-dom'
 
 import { useState } from 'react'
-
+import {BrowserRouter as Router, Link} from 'react-router-dom'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
@@ -16,10 +16,10 @@ import savings from './assets/Gemini_Generated_Image_u9cddpu9cddpu9cd.jpeg'
 import credit from './assets/Gemini_Generated_Image_sq2pjesq2pjesq2p.jpeg'
 import Categories from './Categories.jsx'
 
+import Categories from './Categories.jsx'
 import Dashboard from './Dashboard'
 import Accounts from './Accounts'
 import Budgets from './Budgets'
-
 import SavingGoals from './SavingGoals'
 
 const linkClass =({isActive})=>
@@ -82,17 +82,19 @@ const Sidebar =({})=>{
 
 }
 
-
+const LayoutRoute =()=>(
+  <div className="flex min-h-screen w-screen m-0 p-0">
+    <Sidebar/>
+      <main className="flex-1 bg-[#282828] min-h-screen text-white p-8">
+        <Outlet/>
+      </main>
+  </div> 
+)
 
 const App =()=>{
 
   
   return(
-    <div className="flex min-h-screen w-screen m-0 p-0">
-      <Sidebar/>
-        <main className="flex-1 bg-[#282828] min-h-screen text-white p-8">
-            <Dashboard/>
-        </main>
 
   <Routes>
     <Route path="/" element={<LayoutRoute />}>
@@ -101,11 +103,9 @@ const App =()=>{
       <Route path="budgets" element={<Budgets />} />
       <Route path="savinggoals" element={<SavingGoals />} />
       <Route path="categories" element={<Categories/>} />
-    </Route>
-  </Routes>
-    </div> 
-  
-  )
+ </Route>
+ </Routes>
+)
 }
 export default App;
 

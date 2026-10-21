@@ -1,53 +1,57 @@
+/* ---------- Page wrapper: sits directly on the app background, like the other pages ---------- */
 .accounts-page {
-  min-height: 100vh;
   box-sizing: border-box;
-  padding: 24px clamp(20px, 4vw, 48px) 40px;
-  background: #2d2d2d;
+  padding:  0 20px 40px 20px;     /* was 12px 36px 40px: no top gap, 20px from the sidebar */
+  background: transparent;          /* removes the lighter inset panel */
   color: #f5f5f5;
-  font-family: "Segoe UI", sans-serif;
+  font-family: inherit;             /* same font as the other pages */
   letter-spacing: 0;
   text-align: left;
 }
 
 .accounts-layout {
   display: grid;
-  gap: 28px;
+  gap: 16px;
   width: 100%;
-  max-width: 1200px;
+  max-width: none;                  /* full width, no centring */
   margin: 0;
 }
 
-.accounts-header h1 {
+/* ---------- Heading (matches "Dashboard", "Budgets", "Saving goals") ---------- */
+.accounts-header h3 {
   margin: 0;
-  color: #f5f5f5;
-  font-size: 34px;
-  font-weight: 600;
+  color: #fff;
+  font-size: 50px;
+  font-weight: 700;
   letter-spacing: 0;
-  line-height: 1.2;
+  line-height: 1;
 }
 
+/* ---------- Total balance bar (matches the Dashboard stat cards) ---------- */
 .accounts-summary {
   display: flex;
-  min-height: 116px;
   box-sizing: border-box;
+  min-height: 108px;
+  max-width: 420px;                 /* card-sized; delete this line for a full-width bar */
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 18px 14px;
-  border-radius: 12px;
-  background: #e4edff;
-  color: #14558d;
+  padding: 20px 24px;
+  border-radius: 20px;
+  background: #edf2fb;
+  color: #1a4f9c;
 }
 
 .accounts-summary-label {
-  margin: 0 0 6px;
-  font-size: 16px;
-  font-weight: 700;
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #1a4f9c;
 }
 
 .accounts-summary-amount {
   margin: 0;
-  color: #143e68;
+  color: #11284b;
   font-size: 30px;
   font-weight: 700;
   line-height: 1.2;
@@ -56,22 +60,23 @@
 .accounts-count {
   margin: 0;
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 600;
   white-space: nowrap;
 }
 
+/* ---------- Account cards (match the Saving goals cards) ---------- */
 .accounts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: 24px;
 }
 
 .account-card {
-  min-height: 190px;
   box-sizing: border-box;
-  padding: 20px;
-  border-radius: 12px;
-  background: #191a1a;
+  min-height: 190px;
+  padding: 24px;
+  border-radius: 24px;
+  background: #1f1f1f;
 }
 
 .account-card-heading {
@@ -85,23 +90,23 @@
   display: flex;
   min-width: 0;
   align-items: flex-start;
-  gap: 12px;
+  gap: 14px;
 }
 
 .account-card-icon {
   flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
-  border-radius: 5px;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
   object-fit: cover;
 }
 
 .account-card h2,
 .account-form-panel h2 {
   margin: 0;
-  color: #f5f5f5;
-  font-size: 23px;
-  font-weight: 600;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
   letter-spacing: 0;
   line-height: 1.25;
   overflow-wrap: anywhere;
@@ -110,20 +115,20 @@
 .account-type {
   margin: 2px 0 0;
   color: #a3a5a8;
-  font-size: 17px;
+  font-size: 18px;
 }
 
 .account-balance {
   margin: 22px 0 0;
   color: #0870ba;
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
 }
 
 .account-initial-balance {
   margin: 16px 0 -18px;
   color: #a3a5a8;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .account-goals {
@@ -137,71 +142,74 @@
 
 .account-goal-chip {
   max-width: 100%;
-  padding: 5px 9px;
+  padding: 6px 14px;
   overflow-wrap: anywhere;
-  border: 1px solid #3e5d75;
+  border: 0;
   border-radius: 999px;
-  background: #233b4e;
-  color: #c9e5fa;
-  font-size: 13px;
+  background: #edf2fb;              /* white pill like the Saving goals chips */
+  color: #1a4f9c;
+  font-size: 15px;
+  font-weight: 600;
 }
 
+/* Delete: plain grey text like "Edit / Delete" on Saving goals */
 .account-delete {
   flex: 0 0 auto;
-  padding: 7px 10px;
-  border: 1px solid #4b4b4b;
+  padding: 6px 8px;
+  border: 0;
   border-radius: 7px;
   background: transparent;
-  color: #c4c4c4;
+  color: #a3a5a8;
   font: inherit;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
 }
 
 .account-delete:hover {
-  border-color: #888;
   color: #fff;
 }
 
+/* ---------- Create form panel (matches "Create a new saving goal") ---------- */
 .account-form-panel {
-  padding: 22px;
-  border-radius: 12px;
-  background: #191a1a;
+  padding: 26px 28px;
+  border-radius: 24px;
+  background: #1f1f1f;
 }
 
 .account-form {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.1fr) auto;
   align-items: end;
-  gap: 14px;
+  gap: 18px;
   margin-top: 20px;
 }
 
 .account-field {
   display: grid;
   min-width: 0;
-  gap: 7px;
+  gap: 8px;
   color: #b8b8b8;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
 }
 
 .account-field input,
 .account-field select {
   width: 100%;
-  min-height: 58px;
+  min-height: 54px;
   box-sizing: border-box;
-  padding: 12px;
-  border: 1px solid #3c3c3c;
-  border-radius: 10px;
-  background: #303030;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #2d2d2d;
   color: #f5f5f5;
   font: inherit;
+  font-size: 18px;
   font-weight: 400;
 }
 
 .account-field input::placeholder {
-  color: #999;
+  color: #8a8a8a;
   opacity: 1;
 }
 
@@ -214,25 +222,33 @@
 }
 
 .account-create {
-  min-height: 58px;
-  padding: 0 24px;
+  min-height: 54px;
+  padding: 0 30px;
   border: 0;
-  border-radius: 10px;
-  background: #0867b3;
+  border-radius: 8px;
+  background: #1a6cf0;              /* brighter blue, as on Budgets / Saving goals */
   color: #fff;
   font: inherit;
+  font-size: 18px;
   font-weight: 700;
   cursor: pointer;
 }
 
 .account-create:hover {
-  background: #0b79cf;
+  background: #3a82f5;
 }
 
 .account-success {
   margin: 16px 0 0;
   color: #9dd8ad;
   font-weight: 600;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .accounts-header h1 {
+    font-size: 40px;
+  }
 }
 
 @media (max-width: 760px) {
@@ -247,15 +263,20 @@
 
 @media (max-width: 480px) {
   .accounts-page {
-    padding: 20px 16px 32px;
+    padding: 16px 16px 32px;
   }
 
   .accounts-layout {
-    gap: 16px;
+    gap: 14px;
+  }
+
+  .accounts-header h1 {
+    font-size: 34px;
   }
 
   .accounts-summary {
     min-height: 100px;
+    max-width: none;
     padding: 16px;
   }
 

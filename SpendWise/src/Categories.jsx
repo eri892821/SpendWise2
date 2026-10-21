@@ -395,7 +395,7 @@ const Categories = () => {
   const [categories, setCategories] = useState(loadCategories)
   const [selectedId, setSelectedId] = useState(null)
   const [showPopup, setShowPopup] = useState(false)
-  
+
 
   useEffect(() => {
     saveCategories(categories)
