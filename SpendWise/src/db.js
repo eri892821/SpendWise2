@@ -264,3 +264,42 @@ export const addTransaction = async (categoryId, {date, amount, account}) => {
     throw new Error(`Account "${account}" does not exist.`)
     }
 }
+
+export const getRecentTransactions = async (limit = 5) => {
+    await ready
+
+    const { rows } = await db.query(
+        `SELECT
+            t.id,
+            to_char(t.date, 'YYYY-MM-DD') AS date,
+            c.name AS category,
+            a.name AS account,
+            t.amount::float AS amount
+            FROM transactions t
+            JOIN categories c ON c.id = t.category_id
+            JOIN accounts a ON a.id = t.account_id
+            ORDER BY t.date DESC, t.id DESC
+            LIMIT $1`,
+        [limit]
+    )
+    return rows
+}
+
+export const getRecentCategories = async (limit = 3) => {
+    await ready
+
+    const {rows} = await db.query(
+        `SELECT
+        c.id,
+        c.name,
+        c.budget::float AS budget,
+        COALESCE(SUM(t.amount), 0)::float AS spent
+        FROM categories c
+        LEFT JOIN transactions t ON t.category_id = c.id
+        GROUP BY c.id
+        ORDER BY c.id DESC
+        LIMIT $1`,
+        [limit]
+    )
+    return rows
+}
