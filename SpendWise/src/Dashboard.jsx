@@ -3,7 +3,9 @@ import savings from './assets/Gemini_Generated_Image_u9cddpu9cddpu9cd.jpeg'
 import credit from './assets/Gemini_Generated_Image_sq2pjesq2pjesq2p.jpeg'
 import { getRecentTransactions, getRecentCategories } from './db'
 import {Link} from 'react-router-dom'
+import { PGlite } from '@electric-sql/pglite'
 
+const db = new PGlite
 const CategoryRows = () => {
   const [categories, setCategories] = useState(null) // null = still loading
 
@@ -122,6 +124,7 @@ const Dashboard =()=>{
 
   const [Popup,setPopup] = useState(false)
   const [Pop,setPop] = useState(false)
+  const [accName,setaccName] = useState('')
   const handleBudget =(e)=>{
     e.preventDefault();
     setPop(false)
